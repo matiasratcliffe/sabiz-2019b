@@ -11,7 +11,8 @@ Class {
 		'playersStates',
 		'playedCards',
 		'deck',
-		'turnAllocator'
+		'turnAllocator',
+		'triggeredEffects'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -63,6 +64,9 @@ Game >> addPlayedCard: card to: target by: player [
 
 { #category : #'private - spotEffects' }
 Game >> apply: effect for: player [
+	| effectsTriggeredByPlayer |
+	effectsTriggeredByPlayer := triggeredEffects at: player.
+	effectsTriggeredByPlayer add: effect.
 	effect applyOn: self triggeredBy: player
 ]
 
@@ -203,7 +207,13 @@ Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
 						on: 1
 						and: 0
 						holding: {deck nextCard. deck nextCard})
-				} asOrderedCollection ]) asOrderedDictionary
+				} asOrderedCollection ]) asOrderedDictionary.
+	triggeredEffects := (gamePlayers
+		collect: [ :each | 
+			Association
+				key: each
+				value: OrderedCollection new
+			]) asOrderedDictionary
 ]
 
 { #category : #'private - spotEffects' }
@@ -265,6 +275,18 @@ Game >> removePlayedCard: playedCard [
 		ifAbsent: [ AssertionFailure
 				signal:
 					'Tried to remove a non existent played card (check that both the effect and the target are in order)' ]
+]
+
+{ #category : #'private - spotEffects' }
+Game >> repeatLastEffectTriggeredBy: player [
+	| effectsTriggeredByPlayer effect |
+	effectsTriggeredByPlayer := triggeredEffects at: player.
+	self
+		assert: effectsTriggeredByPlayer isNotEmpty
+		description: 'Cant play this card on a player that never triggered an effect'.
+	"Steping on a null effect still counts as triggering an effect"
+	effect := effectsTriggeredByPlayer last.
+	self apply: effect for: player
 ]
 
 { #category : #'private - cardEffects' }
