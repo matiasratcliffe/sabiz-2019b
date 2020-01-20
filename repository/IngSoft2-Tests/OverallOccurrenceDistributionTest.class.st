@@ -3,7 +3,7 @@ This class contains tests about overall spot distributions
 "
 Class {
 	#name : #OverallOccurrenceDistributionTest,
-	#superclass : #TestCase,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

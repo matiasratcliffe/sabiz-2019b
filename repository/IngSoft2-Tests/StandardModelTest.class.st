@@ -23,6 +23,15 @@ StandardModelTest >> setUp [
 	player3 := Player named: #Player3
 ]
 
+{ #category : #asserting }
+StandardModelTest >> should: aBlock raise: anExceptionalEvent whoseDescriptionIncludes: subString [
+	^ self
+		should: aBlock
+		raise: anExceptionalEvent
+		whoseDescriptionIncludes: subString
+		description: ''
+]
+
 { #category : #testResourceTests }
 StandardModelTest >> testTestResourceYieldsValidObjects [
 	self assert: testResource standardGame class equals: Game.

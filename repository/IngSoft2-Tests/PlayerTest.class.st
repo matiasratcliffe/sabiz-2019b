@@ -20,6 +20,35 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 ]
 
 { #category : #tests }
+PlayerTest >> testCardsInHandOfReturnsEmptyColectionIfThePlayerHasNoCards [
+	| game |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {SequentialDice withSequence: {10. 1}}
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new}).
+	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
+	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
+	self assert: (game cardsInHandOf: player1) asArray equals: {  }
+]
+
+{ #category : #tests }
+PlayerTest >> testPlayerThatFinishedCantPlayACard [
+	| game card |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {SequentialDice withSequence: {10. 1}}
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: (GimmickDeck withSequence: {Card with: RepeatEffect new}).
+	game throwDicesFor: player1.
+	game throwDicesFor: player2.
+	card := (game cardsInHandOf: player1) first.
+	self
+		should: [game play: card for: player1 on: {player2}]
+		raise: AssertionFailure
+]
+
+{ #category : #tests }
 PlayerTest >> testPlayingACardRemovesItFromHand [
 	| game cardToPlay |
 	game := Game

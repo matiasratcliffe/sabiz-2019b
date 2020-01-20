@@ -269,11 +269,22 @@ GameTest >> testRiggedGameEndsAsExpected [
 ]
 
 { #category : #'tests - game state' }
+GameTest >> testRoundNumberIncreasesEveryRound [
+	self halt
+]
+
+{ #category : #'tests - game state' }
 GameTest >> testSimplisticGameEndsSuccessfully [
 	| game |
 	game := testResource simplisticTestingGame.
 	game playAnEntireGameWithoutPlayingCards.
 	self deny: game isNotOver
+]
+
+{ #category : #'test - playing' }
+GameTest >> testSimplisticGameYieldsExpectedStateList [
+	self halt
+
 ]
 
 { #category : #'tests - game state' }

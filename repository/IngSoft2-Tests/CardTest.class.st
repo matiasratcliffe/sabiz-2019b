@@ -32,6 +32,36 @@ CardTest >> newCardTestingGameWith: deck [
 		using: deck
 ]
 
+{ #category : #'tests - instant' }
+CardTest >> testARepeatCardCantBePlayedOnAPlayerThatFinished [
+	| game card |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {SequentialDice withSequence: {10}}
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: (GimmickDeck withSequence: {Card with: RepeatEffect new}).
+	game throwDicesFor: player1.
+	card := (game cardsInHandOf: player2) first.
+	self
+		should: [game play: card for: player2 on: {player1}]
+		raise: AssertionFailure
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testASpeedCardCantBePlayedOnAPlayerThatFinished [
+	| game card |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {SequentialDice withSequence: {10}}
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: (GimmickDeck withSequence: {Card with: SpeedEffect new}).
+	game throwDicesFor: player1.
+	card := (game cardsInHandOf: player2) first.
+	self
+		should: [game play: card for: player2 on: {player1}]
+		raise: AssertionFailure
+]
+
 { #category : #'tests - permanent' }
 CardTest >> testAccelerationEffectIncreasesByOneRollResults [
 	| game cardToPlay |
@@ -53,6 +83,21 @@ CardTest >> testAccelerationMustBeTargetedToAllPlayers [
 	game play: cardToPlay for: player1 on: { player1. player2 }.
 	game throwDicesFor: player1.
 	self should: [game play: cardToPlay for: player2 on: { player1 }] raise: AssertionFailure
+]
+
+{ #category : #'tests - permanent' }
+CardTest >> testAnOverloadCardCantBePlayedOnAPlayerThatFinished [
+	| game card |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {SequentialDice withSequence: {10}}
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: (GimmickDeck withSequence: {Card with: OverloadEffect new}).
+	game throwDicesFor: player1.
+	card := (game cardsInHandOf: player2) first.
+	self
+		should: [game play: card for: player2 on: {player1}]
+		raise: AssertionFailure
 ]
 
 { #category : #'tests - instant' }

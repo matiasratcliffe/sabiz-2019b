@@ -11,6 +11,7 @@ Class {
 SpeedEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
 	super applyOn: target on: aGame triggeredBy: aPlayer.
 	self assert: target size = 1 description: 'The speedup card can only be played on a single player'.
+	self assert: (aGame playerHasNotFinished: target first) description: 'The speed card cant be played on a player that has already finished'.
 	aGame addPlayedCard: (Card with: self) to: target by: aPlayer
 ]
 

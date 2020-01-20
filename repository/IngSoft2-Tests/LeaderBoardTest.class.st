@@ -3,7 +3,7 @@ This class contains tests about LeaderBoard
 "
 Class {
 	#name : #LeaderBoardTest,
-	#superclass : #TestCase,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

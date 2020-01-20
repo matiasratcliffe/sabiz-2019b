@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #tests }
+TurnAllocatorTest >> testCanOnlyRemoveAPlayerFromTurnAllocatorIfItsThatPlayersTurn [
+	self halt
+]
+
+{ #category : #tests }
 TurnAllocatorTest >> testCantCreateTurnAllocatorWithEmptyCollection [
 	self should: [TurnAllocator for: {}] raise: AssertionFailure
 ]

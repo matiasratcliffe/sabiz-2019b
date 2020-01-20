@@ -3,7 +3,7 @@ This class contains tests about individual spot distributions
 "
 Class {
 	#name : #IndividualOccurrenceProbabilityTest,
-	#superclass : #TestCase,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

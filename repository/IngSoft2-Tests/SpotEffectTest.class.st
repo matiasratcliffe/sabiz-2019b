@@ -7,6 +7,11 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
+{ #category : #tests }
+SpotEffectTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
+	self halt
+]
+
 { #category : #'tests - cardgiving' }
 SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 	| game board |
@@ -21,6 +26,11 @@ SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
 	self assert: (game cardsInHandOf: player1) size equals: 3
+]
+
+{ #category : #tests }
+SpotEffectTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
+	self halt
 ]
 
 { #category : #'tests - moonwalk' }

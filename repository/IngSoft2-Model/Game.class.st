@@ -186,34 +186,11 @@ Game >> numberOfPlayers [
 
 { #category : #playing }
 Game >> play: card for: player on: target [
+	self
+		assert: (self playerHasNotFinished: player)
+		description: 'Trying to play a card for a player that has already finished'.
 	(self stateOf: player) checkAvailabilityOf: card.
 	card applyEffectOn: target on: self triggeredBy: player
-]
-
-{ #category : #initialization }
-Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
-	leaderBoard := LeaderBoard new.
-	board := aBoard copy.
-	deck := aDeck.
-	turnAllocator := TurnAllocator for: gamePlayers.
-	dices := gameDices copy.
-	playedCards := OrderedCollection new.
-	playersStates := (gamePlayers
-		collect: [ :each | 
-			Association
-				key: each
-				value:
-					{(PlayerState
-						on: 1
-						and: 0
-						holding: {deck nextCard. deck nextCard})
-				} asOrderedCollection ]) asOrderedDictionary.
-	triggeredEffects := (gamePlayers
-		collect: [ :each | 
-			Association
-				key: each
-				value: OrderedCollection new
-			]) asOrderedDictionary
 ]
 
 { #category : #'private - spotEffects' }
@@ -246,7 +223,7 @@ Game >> playerHasNotFinished: player [
 	^ (self lapOf: player) < board numberOfLaps
 ]
 
-{ #category : #accessingGame }
+{ #category : #accessingGameState }
 Game >> playerWhoseTurnItIsToPlay [
 	^ turnAllocator playerWhoseTurnItIsToPlay
 ]
@@ -328,6 +305,11 @@ Game >> rewindPositionFor: player [
 { #category : #'private - moving' }
 Game >> rollSum [
 	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
+]
+
+{ #category : #accessingGameState }
+Game >> roundNumber [
+	^ turnAllocator currentRoundNumber
 ]
 
 { #category : #accessingPlayer }

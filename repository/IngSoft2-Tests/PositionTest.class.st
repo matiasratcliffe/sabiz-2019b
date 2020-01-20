@@ -3,7 +3,7 @@ This class contains tests about player state
 "
 Class {
 	#name : #PositionTest,
-	#superclass : #TestCase,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 

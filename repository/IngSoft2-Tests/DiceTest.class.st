@@ -3,7 +3,7 @@ This class contains tests about dices
 "
 Class {
 	#name : #DiceTest,
-	#superclass : #TestCase,
+	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 
