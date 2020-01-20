@@ -123,14 +123,6 @@ GameTest >> testGameHasGivenSetOfDices [
 	self assert: (game dices includesAll: {dice1. dice2})
 ]
 
-{ #category : #'tests - game state' }
-GameTest >> testGameIsOver [
-	| game |
-	game := testResource standardGame.
-	game playAnEntireGameWithoutPlayingCards.
-	self deny: game isNotOver
-]
-
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game |
@@ -274,4 +266,21 @@ GameTest >> testRiggedGameEndsAsExpected [
 	self
 		assert: game finishRanking
 		equals: {player1. player2. player3}
+]
+
+{ #category : #'tests - game state' }
+GameTest >> testSimplisticGameEndsSuccessfully [
+	| game |
+	game := testResource simplisticTestingGame.
+	game playAnEntireGameWithoutPlayingCards.
+	self deny: game isNotOver
+]
+
+{ #category : #'tests - game state' }
+GameTest >> testStandardGameEndsSuccessfully [
+	| game |
+	game := testResource standardGame.
+	game playAnEntireGameWithoutPlayingCards.
+	self deny: game isNotOver.
+	
 ]

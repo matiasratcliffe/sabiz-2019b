@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'turnWheel',
 		'currentTurn',
-		'currentRound'
+		'currentRound',
+		'currentIndex'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -22,11 +23,17 @@ TurnAllocator class >> for: participants [
 
 { #category : #advancing }
 TurnAllocator >> advanceTurnWheel [
-	currentTurn isNil ifTrue: [ ^ nil ].
-	turnWheel lastRolledIndex = (turnWheel sequenceSize - 1)
+	currentIndex = (turnWheel size - 1)
 		ifTrue: [ currentRound := currentRound + 1 ].
-	currentTurn := turnWheel roll.
-	^ currentTurn
+	turnWheel isNotEmpty
+		ifTrue: [ currentIndex := (currentIndex + 1) % turnWheel size ]
+]
+
+{ #category : #'private - validation' }
+TurnAllocator >> checkPresenceOf: player [
+	self
+		assert: (turnWheel includes: player)
+		description: 'Tried to remove a player that is not in the Turn Wheel'
 ]
 
 { #category : #accessing }
@@ -36,19 +43,29 @@ TurnAllocator >> currentRoundNumber [
 
 { #category : #initialization }
 TurnAllocator >> initializeFor: participants [
-	turnWheel := SequentialDice withSequence: participants.
-	currentTurn := turnWheel roll.
+	turnWheel := participants asOrderedCollection copy.
+	currentIndex := 0.
 	currentRound := 1
 ]
 
 { #category : #alteringWheel }
 TurnAllocator >> playerHasFinished: player [
-	turnWheel sequenceSize = 1
-		ifTrue: [ currentTurn := nil ]
-		ifFalse: [ turnWheel removeFromSequence: player ]
+	"This also performs the turnWheel advance indirectly"
+
+	| index |
+	self checkPresenceOf: player.
+	index := (turnWheel indexOf: player) - 1.
+	self
+		assert: index = currentIndex
+		description: 'Cannot remove a player from the Turn Wheel unless its his turn'.
+	turnWheel remove: player.
+	currentIndex = turnWheel size
+		ifTrue: [ currentIndex := 0.
+			currentRound := currentRound + 1 ]
 ]
 
 { #category : #accessing }
 TurnAllocator >> playerWhoseTurnItIsToPlay [
-	^ currentTurn
+	turnWheel isEmpty ifTrue: [ ^ nil ].
+	^ turnWheel at: currentIndex + 1
 ]

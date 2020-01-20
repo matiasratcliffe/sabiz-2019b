@@ -27,6 +27,15 @@ StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber [
 		andLaps: 1
 ]
 
+{ #category : #gameCreation }
+StandardModelTestResource >> simplisticTestingGame [
+	^ Game
+		playedBy: {#Player1 . #Player2}
+		throwing: { SequentialDice withSequence: { 4 } }
+		on: (self effectlessBoardWithSpots: 10)
+		using: self standardDeckOfCards
+]
+
 { #category : #boardCreation }
 StandardModelTestResource >> standardBoard [
 	^ self standardBoardWithSpots: self standardNumberOfSpots
@@ -101,7 +110,7 @@ StandardModelTestResource >> standardSetOfDices [
 
 { #category : #standardValues }
 StandardModelTestResource >> standardSetOfPlayers [
-	^ {(Player named: #player1).
-	(Player named: #player2).
-	(Player named: #player3)}
+	^ {(Player named: #Player1).
+	(Player named: #Player2).
+	(Player named: #Player3)}
 ]

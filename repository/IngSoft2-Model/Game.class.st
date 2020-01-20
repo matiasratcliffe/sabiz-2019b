@@ -356,9 +356,8 @@ Game >> throwDicesFor: player [
 				holding: (self cardsInHandOf: player)).
 	self move: player.
 	(self playerHasFinished: player)
-		ifTrue: [ turnAllocator playerHasFinished: player ].
-	self isNotOver
-		ifTrue: [ turnAllocator advanceTurnWheel ]
+		ifTrue: [ turnAllocator playerHasFinished: player ]
+		ifFalse: [ turnAllocator advanceTurnWheel ]
 ]
 
 { #category : #'private - moving' }
