@@ -39,3 +39,10 @@ Card >> hash [
 Card >> initializeWith: anEffect [
 	effect := anEffect
 ]
+
+{ #category : #printing }
+Card >> printOn: aStream [
+	aStream
+		nextPutAll: (effect asString readStream upToAll: 'Effect');
+		nextPutAll: 'Card'
+]

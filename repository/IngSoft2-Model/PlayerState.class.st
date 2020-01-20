@@ -55,6 +55,20 @@ PlayerState >> position [
 	^ position
 ]
 
+{ #category : #printing }
+PlayerState >> printOn: aStream [
+	| buffer |
+	buffer := (cards asArray) asString.
+	aStream nextPut: $(.
+	self spotNumber printOn: aStream.
+	aStream nextPutAll: ', '.
+	self lapNumber printOn: aStream.
+	aStream nextPutAll: ', '.
+	self roundNumber printOn: aStream.
+	aStream nextPut: $).
+	aStream nextPutAll: (buffer copyFrom: 9 to: buffer size)
+]
+
 { #category : #accessing }
 PlayerState >> roundNumber [
 	^ roundNumber

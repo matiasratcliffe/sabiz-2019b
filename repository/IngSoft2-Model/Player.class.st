@@ -35,3 +35,8 @@ Player >> initializeNamed: aName [
 Player >> name [
 	^ playerName
 ]
+
+{ #category : #printing }
+Player >> printOn: aStream [
+	aStream nextPutAll: playerName
+]

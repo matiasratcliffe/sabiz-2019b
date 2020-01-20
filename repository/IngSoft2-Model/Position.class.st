@@ -40,6 +40,15 @@ Position >> lapNumber [
 	^ lapNumber
 ]
 
+{ #category : #printing }
+Position >> printOn: aStream [
+	aStream nextPut: $(.
+	spotNumber printOn: aStream.
+	aStream nextPutAll: ', '.
+	lapNumber printOn: aStream.
+	aStream nextPut: $)
+]
+
 { #category : #accessing }
 Position >> spotNumber [
 	^ spotNumber

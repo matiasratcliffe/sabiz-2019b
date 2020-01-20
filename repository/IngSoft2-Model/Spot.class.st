@@ -20,6 +20,13 @@ Spot >> effect [
 	^ effect
 ]
 
+{ #category : #printing }
+Spot >> printOn: aStream [
+	aStream
+		nextPutAll: (effect asString readStream upToAll: 'Effect');
+		nextPutAll: 'Spot'
+]
+
 { #category : #'instance creation' }
 Spot >> with: anEffect [
 	effect := anEffect
