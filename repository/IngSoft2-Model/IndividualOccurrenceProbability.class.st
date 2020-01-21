@@ -13,7 +13,9 @@ Class {
 
 { #category : #'instance creation' }
 IndividualOccurrenceProbability class >> checkValidityOf: probability [
-	self assert: (probability >= 0 and: probability <= 100)
+	self
+		assert: (probability >= 0 and: probability <= 100)
+		description: 'The probability must be between 0 and 100'
 ]
 
 { #category : #'instance creation' }

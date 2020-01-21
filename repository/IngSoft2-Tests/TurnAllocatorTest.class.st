@@ -14,7 +14,10 @@ TurnAllocatorTest >> testCanOnlyRemoveAPlayerFromTurnAllocatorIfItsThatPlayersTu
 
 { #category : #tests }
 TurnAllocatorTest >> testCantCreateTurnAllocatorWithEmptyCollection [
-	self should: [TurnAllocator for: {}] raise: AssertionFailure
+	self
+		should: [ TurnAllocator for: {} ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Cant create TurnAllocator for an empty group'
 ]
 
 { #category : #tests }

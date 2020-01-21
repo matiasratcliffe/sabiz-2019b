@@ -12,15 +12,19 @@ DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
 	self
 		should: [ SequentialDice withSequence: {} ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Tried to create a sequence dice with an empty sequence'
 ]
 
 { #category : #sequentialDiceTests }
 DiceTest >> testCantRemoveLastElementFromSequentialDice [
 	| dice |
-	dice := SequentialDice withSequence: { 1. 2. 3 }.
+	dice := SequentialDice withSequence: {1 . 2 . 3}.
 	dice removeFromSequence: 1.
 	dice removeFromSequence: 2.
-	self should: [ dice removeFromSequence: 3 ] raise: AssertionFailure
+	self
+		should: [ dice removeFromSequence: 3 ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'The last element of a sequence cannot be removed'
 ]
 
 { #category : #sequentialDiceTests }
@@ -28,12 +32,18 @@ DiceTest >> testCantRemoveUnexistingElementFromSequentialDice [
 	| dice |
 	dice := SequentialDice withSequence: {1 . 2}.
 	dice removeFromSequence: 1.
-	self should: [ dice removeFromSequence: 1 ] raise: AssertionFailure
+	self
+		should: [ dice removeFromSequence: 1 ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'This element is not present in the sequence of the dice'
 ]
 
 { #category : #randomDiceTests }
 DiceTest >> testRandomDiceCreationFailsWhenGivenNumberOfFacesIsLessThanFour [
-	self should: [ RandomDice withFaces: 2 ] raise: AssertionFailure
+	self
+		should: [ RandomDice withFaces: 2 ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Number of Faces should be greater than three'
 ]
 
 { #category : #randomDiceTests }

@@ -25,11 +25,15 @@ StandardModelTest >> setUp [
 
 { #category : #asserting }
 StandardModelTest >> should: aBlock raise: anExceptionalEvent whoseDescriptionIncludes: subString [
+	self
+		should: aBlock
+		raise: anExceptionalEvent
+		description: 'The block does not raise the expected event'.
 	^ self
 		should: aBlock
 		raise: anExceptionalEvent
 		whoseDescriptionIncludes: subString
-		description: ''
+		description: 'The description does not contain the expected substring'
 ]
 
 { #category : #testResourceTests }

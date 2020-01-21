@@ -21,7 +21,7 @@ Class {
 Game class >> checkDices: dices [
 	self
 		assert: dices isNotEmpty
-		description: 'Tried to initialize a game with an invalid set of Dices'
+		description: 'Tried to create a game with an invalid set of Dices'
 ]
 
 { #category : #validation }
@@ -33,7 +33,7 @@ Game class >> checkDuplicatePlayers: players [
 Game class >> checkPlayerQuantity: players [
 	self
 		assert: players isNotEmpty
-		description: 'Not enough players to initialize game'
+		description: 'Cant create a game with no players'
 ]
 
 { #category : #'instance creation' }
@@ -260,7 +260,7 @@ Game >> repeatLastEffectTriggeredBy: player [
 	effectsTriggeredByPlayer := triggeredEffects at: player.
 	self
 		assert: effectsTriggeredByPlayer isNotEmpty
-		description: 'Cant play this card on a player that never triggered an effect'.
+		description: 'Cant play repeat card on a player that hasnt triggered an effect yet'.
 	"Steping on a null effect still counts as triggering an effect"
 	effect := effectsTriggeredByPlayer last.
 	self apply: effect for: player

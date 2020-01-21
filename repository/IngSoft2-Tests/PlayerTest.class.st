@@ -16,7 +16,10 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 		on: (testResource effectlessBoardWithSpots: 10)
 		using: (Deck with: {RepeatEffect new}).
 	cardToPlay := Card with: OverloadEffect new.
-	self should: [ game play: cardToPlay for: player1 on: player2] raise: AssertionFailure.
+	self
+		should: [ game play: cardToPlay for: player1 on: player2 ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'That card is not in the hand of the player'
 ]
 
 { #category : #tests }
@@ -44,8 +47,9 @@ PlayerTest >> testPlayerThatFinishedCantPlayACard [
 	game throwDicesFor: player2.
 	card := (game cardsInHandOf: player1) first.
 	self
-		should: [game play: card for: player1 on: {player2}]
+		should: [ game play: card for: player1 on: {player2} ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Trying to play a card for a player that has already finished'
 ]
 
 { #category : #tests }

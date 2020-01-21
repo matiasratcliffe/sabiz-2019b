@@ -45,6 +45,7 @@ CardTest >> testARepeatCardCantBePlayedOnAPlayerThatFinished [
 	self
 		should: [game play: card for: player2 on: {player1}]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'The repeat card cant be played on a player that has already finished'
 ]
 
 { #category : #'tests - permanent' }
@@ -60,6 +61,7 @@ CardTest >> testASpeedCardCantBePlayedOnAPlayerThatFinished [
 	self
 		should: [game play: card for: player2 on: {player1}]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'The speed card cant be played on a player that has already finished'
 ]
 
 { #category : #'tests - permanent' }
@@ -82,7 +84,10 @@ CardTest >> testAccelerationMustBeTargetedToAllPlayers [
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game play: cardToPlay for: player1 on: { player1. player2 }.
 	game throwDicesFor: player1.
-	self should: [game play: cardToPlay for: player2 on: { player1 }] raise: AssertionFailure
+	self
+		should: [game play: cardToPlay for: player2 on: { player1 }]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Tried to play acceleration card on a specific set of players instead of all of them'
 ]
 
 { #category : #'tests - permanent' }
@@ -98,6 +103,7 @@ CardTest >> testAnOverloadCardCantBePlayedOnAPlayerThatFinished [
 	self
 		should: [game play: card for: player2 on: {player1}]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'The overload card cant be played on a player that has already finished'
 ]
 
 { #category : #'tests - instant' }
@@ -143,6 +149,7 @@ CardTest >> testCantPlayAPermanentCardIfItsNotTheTurnOfThePlayer [
 	self
 		should: [ game play: cardToPlay for: player2 on: { player1. player2 } ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Cant play a permanent card out of turn'
 ]
 
 { #category : #'tests - instant' }
@@ -251,6 +258,7 @@ CardTest >> testRedoCardCannotBePlayedIfAnotherCardsWereNeverPlayed [
 				for: player1
 				on: game players ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Cannot play redo card as there are no active played cards on the pile'
 ]
 
 { #category : #'tests - instant' }
@@ -261,6 +269,7 @@ CardTest >> testRepeatCardCannotBePlayedIfDicesNeverRolled [
 	self
 		should: [ game play: cardToPlay for: player1 on: {player2} ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Cant play repeat card on a player that hasnt triggered an effect yet'
 ]
 
 { #category : #'tests - instant' }

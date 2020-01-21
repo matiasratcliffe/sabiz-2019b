@@ -19,6 +19,7 @@ OverallOccurrenceDistributionTest >> testCantCreateEmptyDistribution [
 	self
 		should: [ OverallOccurrenceDistribution with: {} ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Tried to create an empty distribution'
 ]
 
 { #category : #tests }
@@ -54,11 +55,13 @@ OverallOccurrenceDistributionTest >> testTotalProbabilitiesCannotBeDifferentToOn
 				with:
 					{(IndividualOccurrenceProbability of: #element1 withProbability: 25).
 					(IndividualOccurrenceProbability of: #element2 withProbability: 25)} ]
-		raise: AssertionFailure.
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Probabilities do not add up to a hundred'.
 	self
 		should: [ OverallOccurrenceDistribution
 				with:
 					{(IndividualOccurrenceProbability of: #element1 withProbability: 80).
 					(IndividualOccurrenceProbability of: #element3 withProbability: 25)} ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Probabilities do not add up to a hundred'
 ]

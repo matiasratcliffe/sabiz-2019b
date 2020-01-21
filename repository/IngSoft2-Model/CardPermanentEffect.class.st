@@ -16,7 +16,7 @@ CardPermanentEffect >> applyOn: target on: aGame triggeredBy: aPlayer [
 CardPermanentEffect >> checkTurnOf: aPlayer in: aGame [
 	self
 		assert: aGame playerWhoseTurnItIsToPlay = aPlayer
-		description: 'Is not the turn of that player, cannot play permanent cards'
+		description: 'Cant play a permanent card out of turn'
 ]
 
 { #category : #accesing }

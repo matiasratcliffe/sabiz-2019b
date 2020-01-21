@@ -11,10 +11,12 @@ Class {
 PositionTest >> testCantCreateAPositionWithAnInvalidSpotNumber [
 	self
 		should: [ Position on: 0 and: 1 ]
-		raise: AssertionFailure.
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'The spot number must be a positive integer'.
 	self
 		should: [ Position on: -1 and: 1 ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'The spot number must be a positive integer'
 ]
 
 { #category : #tests }

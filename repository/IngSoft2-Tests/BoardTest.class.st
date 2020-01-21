@@ -32,6 +32,7 @@ BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
 	self
 		should: [ Board with: {} andLaps: 2]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Invalid number of spots'
 ]
 
 { #category : #tests }
@@ -61,16 +62,20 @@ BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsEl
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 	self
 		should: [ Board with: {(Spot with: NullEffect new)} andLaps: 0 ]
-			raise: AssertionFailure;
+		raise: AssertionFailure	
+		whoseDescriptionIncludes: 'Invalid number of laps';
 		should: [ Board with: {(Spot with: NullEffect new)} andLaps: -1 ]
-			raise: AssertionFailure
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Invalid number of laps'
 ]
 
 { #category : #'tests - instance creation' }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 	self
 		should: [ testResource standardBoardWithSpots: 0 ]
-			raise: AssertionFailure;
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Invalid number of spots';
 		should: [ testResource standardBoardWithSpots: -1 ]
-			raise: AssertionFailure
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Invalid number of spots'
 ]

@@ -45,6 +45,7 @@ GameTest >> testCantCheckThePositionOfAPlayerThatIsNotInTheGame [
 	self
 		should: [ testResource standardGame positionOf: (Player named: #PlayerFromAnotherGame) ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Asked for a player that is not in the game'
 ]
 
 { #category : #'tests - instance creation' }
@@ -56,6 +57,7 @@ GameTest >> testCantCreateGameWithoutDices [
 				on: testResource standardBoard
 				using: testResource standardDeckOfCards ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Tried to create a game with an invalid set of Dices'
 ]
 
 { #category : #'tests - instance creation' }
@@ -67,6 +69,7 @@ GameTest >> testCantCreateGameWithoutPlayers [
 				on: testResource standardBoard
 				using: testResource standardDeckOfCards ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Cant create a game with no players'
 ]
 
 { #category : #'tests - instance creation' }
@@ -78,6 +81,7 @@ GameTest >> testCantHaveDupplicatedPlayers [
 				on: testResource standardBoard
 				using: testResource standardDeckOfCards ]
 		raise: AssertionFailure
+		whoseDescriptionIncludes: 'The player set contains a duplicate'
 ]
 
 { #category : #'test - playing' }
@@ -85,7 +89,10 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 	| game |
 	game := testResource standardGame.
 	game playAnEntireGameWithoutPlayingCards.
-	self should: [ game playOneRoundWithoutPlayingCards ] raise: AssertionFailure
+	self
+		should: [ game playOneRoundWithoutPlayingCards ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Game is already over'
 ]
 
 { #category : #'test - accessing' }
@@ -165,8 +172,10 @@ GameTest >> testPlayerCantPlayUnlessItsHisTurn [
 	self assert: game playerWhoseTurnItIsToPlay equals: player1.
 	game throwDicesFor: player1.
 	self assert: game playerWhoseTurnItIsToPlay equals: player2.
-	self should: [ game throwDicesFor: player1 ]
-		  raise: AssertionFailure
+	self
+		should: [ game throwDicesFor: player1 ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Trying to move a player out of turn'
 ]
 
 { #category : #'test - playing' }

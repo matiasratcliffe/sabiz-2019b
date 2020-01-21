@@ -12,7 +12,10 @@ LeaderBoardTest >> testCantAddDuplicatedValuesToLeaderBoard [
 	| leaderboard |
 	leaderboard := LeaderBoard new.
 	leaderboard add: 'element'.
-	self should: [ leaderboard add: 'element' ] raise: AssertionFailure
+	self
+		should: [ leaderboard add: 'element' ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Element already in leaderboard'
 ]
 
 { #category : #tests }
