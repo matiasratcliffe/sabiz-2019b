@@ -160,14 +160,14 @@ Game >> move: player [
 		onRoundNumber: turnAllocator currentRoundNumber.
 	self updateStateFor: player with: newState.
 	self player: player triggersEffectAt: newState spotNumber. 
-	((self playerHasNotFinished: player)
-		or: (leaderBoard includes: player))
-		ifFalse: [ leaderBoard add: player ]
+	((self playerHasFinished: player)
+		and: (leaderBoard doesNotInclude: player))
+		ifTrue: [ leaderBoard add: player ]
 ]
 
 { #category : #'private - spotEffects' }
 Game >> moveEveryoneToTheFirstSpot [
-	self players
+	self playersStillPlaying
 		do: [ :each | 
 			self
 				updateStateFor: each
@@ -202,7 +202,7 @@ Game >> player: player triggersEffectAt: spotNumber [
 
 { #category : #'private - spotEffects' }
 Game >> player: player triggersMoonWalkEffectMoving: anAmount [
-	self players
+	self playersStillPlaying
 		do: [ :each | 
 			| newState |
 			each == player
@@ -238,6 +238,11 @@ Game >> playersCurrentStates [
 	^ (self players
 		collect: [ :player | Association key: player value: (self stateOf: player) ])
 		asArray
+]
+
+{ #category : #accessingGameState }
+Game >> playersStillPlaying [
+	^ self players select: [ :each | self playerHasNotFinished: each ]
 ]
 
 { #category : #accessingPlayer }

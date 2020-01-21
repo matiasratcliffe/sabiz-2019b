@@ -130,6 +130,19 @@ GameTest >> testGameHasGivenSetOfDices [
 	self assert: (game dices includesAll: {dice1. dice2})
 ]
 
+{ #category : #'tests - game state' }
+GameTest >> testGameShowsCorrectPlayersThatAreStillPlayingAfterSomeoneFinishes [
+	| game |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {(SequentialDice withSequence: {10})}
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: testResource standardDeckOfCards.
+	self assert: game players equals: game playersStillPlaying.
+	game throwDicesFor: player1.
+	self assert: game playersStillPlaying equals: { player2 }
+]
+
 { #category : #'test - playing' }
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game |
@@ -279,7 +292,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 
 { #category : #'tests - game state' }
 GameTest >> testRoundNumberIncreasesEveryRound [
-	self halt
+	self assert: false
 ]
 
 { #category : #'tests - game state' }
@@ -292,8 +305,7 @@ GameTest >> testSimplisticGameEndsSuccessfully [
 
 { #category : #'test - playing' }
 GameTest >> testSimplisticGameYieldsExpectedStateList [
-	self halt
-
+self assert: false
 ]
 
 { #category : #'tests - game state' }

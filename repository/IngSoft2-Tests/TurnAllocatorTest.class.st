@@ -9,7 +9,14 @@ Class {
 
 { #category : #tests }
 TurnAllocatorTest >> testCanOnlyRemoveAPlayerFromTurnAllocatorIfItsThatPlayersTurn [
-	self halt
+	| allocator |
+	allocator := TurnAllocator for: { player1. player2. player3 }.
+	allocator playerHasFinished: player1.
+	allocator advanceTurnWheel.
+	self
+		should: [ allocator playerHasFinished: player2 ]
+		raise: AssertionFailure
+		whoseDescriptionIncludes: 'Cannot remove a player from the Turn Wheel unless its his turn'
 ]
 
 { #category : #tests }

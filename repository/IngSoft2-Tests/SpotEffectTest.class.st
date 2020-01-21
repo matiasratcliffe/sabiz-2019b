@@ -9,7 +9,23 @@ Class {
 
 { #category : #tests }
 SpotEffectTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
-	self halt
+	| game |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {(SequentialDice withSequence: {13 . 1})}
+		on:
+			(testResource
+				effectTestingBoardWithSpots: 10
+				and: AtomicBombEffect new
+				at: 3)
+		using: testResource standardDeckOfCards.
+	game throwDicesFor: player1.
+	game throwDicesFor: player2.
+	game throwDicesFor: player1.
+	game throwDicesFor: player2.
+	self assert: (game playerHasFinished: player1).
+	self assert: (game positionOf: player1) equals: 7.
+	self assert: (game positionOf: player2) equals: 1
 ]
 
 { #category : #'tests - cardgiving' }
@@ -30,7 +46,23 @@ SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 
 { #category : #tests }
 SpotEffectTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
-	self halt
+	| game |
+	game := Game
+		playedBy: {player1. player2}
+		throwing: {(SequentialDice withSequence: {10 . 2})}
+		on:
+			(testResource
+				effectTestingBoardWithSpots: 10
+				and: MoonWalkEffect new
+				at: 5)
+		using: testResource standardDeckOfCards.
+	game throwDicesFor: player1.
+	game throwDicesFor: player2.
+	game throwDicesFor: player1.
+	game throwDicesFor: player2.
+	self assert: (game playerHasFinished: player1).
+	self assert: (game positionOf: player1) equals: 1.
+	self assert: (game positionOf: player2) equals: 5
 ]
 
 { #category : #'tests - moonwalk' }
@@ -54,7 +86,7 @@ SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 ]
 
 { #category : #'tests - atomicbomb' }
-SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMaintainingLaps [
+SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesBackToFirstSpotMaintainingLaps [
 	| game board |
 	board := testResource effectTestingBoardWithSpots: 5 and: AtomicBombEffect new at: 3.
 	game := Game
@@ -70,7 +102,7 @@ SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneGoesBackToFirstSpotMain
 	self assert: (game positionOf: player3) equals: 2.
 	self assert: (game lapOf: player3) equals: 0.
 	game playOneRoundWithoutPlayingCards.
-	self assert: (game positionOf: player1) equals: 1.
+	self assert: (game positionOf: player1) equals: 2.
 	self assert: (game lapOf: player1) equals: 3.
 	self assert: (game positionOf: player2) equals: 1.
 	self assert: (game lapOf: player2) equals: 1.
