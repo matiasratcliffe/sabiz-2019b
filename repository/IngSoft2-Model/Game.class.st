@@ -193,6 +193,32 @@ Game >> play: card for: player on: target [
 	card applyEffectOn: target on: self triggeredBy: player
 ]
 
+{ #category : #initialization }
+Game >> playedBy: gamePlayers throwing: gameDices on: aBoard using: aDeck [
+	leaderBoard := LeaderBoard new.
+	board := aBoard copy.
+	deck := aDeck.
+	turnAllocator := TurnAllocator for: gamePlayers.
+	dices := gameDices copy.
+	playedCards := OrderedCollection new.
+	playersStates := (gamePlayers
+		collect: [ :each | 
+			Association
+				key: each
+				value:
+					{(PlayerState
+						on: 1
+						and: 0
+						holding: {deck nextCard. deck nextCard})
+				} asOrderedCollection ]) asOrderedDictionary.
+	triggeredEffects := (gamePlayers
+		collect: [ :each | 
+			Association
+				key: each
+				value: OrderedCollection new
+			]) asOrderedDictionary
+]
+
 { #category : #'private - spotEffects' }
 Game >> player: player triggersEffectAt: spotNumber [
 	| effect |
