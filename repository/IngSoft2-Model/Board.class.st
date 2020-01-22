@@ -56,7 +56,7 @@ Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 	newLapNumber := state lapNumber
 		+ (grossNewPosition // self numberOfSpots).
 	netNewPosition := grossNewPosition % self numberOfSpots.
-	netNewPosition == 0
+	netNewPosition isZero
 		ifTrue: [ netNewPosition := self numberOfSpots.
 			newLapNumber := newLapNumber - 1 ].
 	^ PlayerState

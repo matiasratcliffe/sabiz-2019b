@@ -12,7 +12,7 @@ Class {
 
 { #category : #'instance creation' }
 PlayedCard class >> of: effect to: target [
-	^ self new of: effect to: target
+	^ self new initializeWith: effect to: target
 ]
 
 { #category : #comparing }
@@ -28,7 +28,7 @@ PlayedCard >> hash [
 ]
 
 { #category : #'instance creation' }
-PlayedCard >> of: anEffect to: aTarget [
+PlayedCard >> initializeWith: anEffect to: aTarget [
 	effect := anEffect.
 	target := aTarget
 ]

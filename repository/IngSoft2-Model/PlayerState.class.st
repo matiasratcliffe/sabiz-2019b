@@ -15,7 +15,7 @@ Class {
 { #category : #'instance creation' }
 PlayerState class >> on: spotNumber and: lapNumber and: roundNumber holding: cards [
 	^ self new
-		on: (Position on: spotNumber and: lapNumber)
+		initializeOn: (Position on: spotNumber and: lapNumber)
 		and: roundNumber
 		holding: cards asOrderedCollection
 ]
@@ -54,16 +54,16 @@ PlayerState >> hash [
 		, self roundNumber asString , self cardsInHand asString) hash
 ]
 
-{ #category : #accessing }
-PlayerState >> lapNumber [
-	^ position lapNumber
-]
-
 { #category : #initialization }
-PlayerState >> on: currentPosition and: currentRoundNumber holding: heldCards [
+PlayerState >> initializeOn: currentPosition and: currentRoundNumber holding: heldCards [
 	position := currentPosition.
 	roundNumber := currentRoundNumber.
 	cards := heldCards
+]
+
+{ #category : #accessing }
+PlayerState >> lapNumber [
+	^ position lapNumber
 ]
 
 { #category : #accessing }

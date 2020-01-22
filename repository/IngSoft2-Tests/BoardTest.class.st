@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #extracted }
+{ #category : #'test support' }
 BoardTest >> allSpotTypes [
 	^ (SpotEffect allSubclasses collect: [ :each | Spot with: each new ])
 		asArray
@@ -35,7 +35,7 @@ BoardTest >> testCreatingACustomBoardRequiresCollectionOfSpotsToUse [
 		whoseDescriptionIncludes: 'Invalid number of spots'
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 BoardTest >> testCustomBoardHasGivenEffectsInTheCorrespondingPosition [
 	| board spots |
 	spots := self allSpotTypes.
@@ -44,7 +44,7 @@ BoardTest >> testCustomBoardHasGivenEffectsInTheCorrespondingPosition [
 		withIndexDo: [ :spot :index | self assert: (board effectAt: index) equals: spot effect ]
 ]
 
-{ #category : #tests }
+{ #category : #'test - accessing' }
 BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsElsewhere [
 	| effect board |
 	effect := MoonWalkEffect new.

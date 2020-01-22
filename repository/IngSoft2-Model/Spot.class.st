@@ -12,7 +12,7 @@ Class {
 
 { #category : #'instance creation' }
 Spot class >> with: anEffect [
-	^ self new with: anEffect
+	^ self new initializeWith: anEffect
 ]
 
 { #category : #accessing }
@@ -20,14 +20,14 @@ Spot >> effect [
 	^ effect
 ]
 
+{ #category : #'instance creation' }
+Spot >> initializeWith: anEffect [
+	effect := anEffect
+]
+
 { #category : #printing }
 Spot >> printOn: aStream [
 	aStream
 		nextPutAll: (effect asString readStream upToAll: 'Effect');
 		nextPutAll: 'Spot'
-]
-
-{ #category : #'instance creation' }
-Spot >> with: anEffect [
-	effect := anEffect
 ]

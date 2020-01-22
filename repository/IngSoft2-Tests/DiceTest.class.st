@@ -74,10 +74,7 @@ DiceTest >> testSequentialDiceRollsExpectedSequence [
 	| dice rolledSequence |
 	rolledSequence := OrderedCollection new.
 	dice := SequentialDice withSequence: {1 . 2 . 3}.
-	rolledSequence add: dice roll.
-	rolledSequence add: dice roll.
-	rolledSequence add: dice roll.
-	rolledSequence add: dice roll.
+	4 timesRepeat: [ rolledSequence add: dice roll ].
 	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 1}
 ]
 
@@ -86,9 +83,7 @@ DiceTest >> testSequentialDiceRollsExpectedSequenceAfterRemovingElement [
 	| dice rolledSequence |
 	rolledSequence := OrderedCollection new.
 	dice := SequentialDice withSequence: {1 . 2 . 3}.
-	rolledSequence add: dice roll.
-	rolledSequence add: dice roll.
-	rolledSequence add: dice roll.
+	3 timesRepeat: [rolledSequence add: dice roll].
 	dice removeFromSequence: 1.
 	rolledSequence add: dice roll.
 	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 2}
