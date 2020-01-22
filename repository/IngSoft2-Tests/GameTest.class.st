@@ -323,7 +323,7 @@ GameTest >> testSimplisticGameEndsSuccessfully [
 	| game |
 	game := testResource simplisticTestingGame.
 	game playAnEntireGameWithoutPlayingCards.
-	self deny: game isNotOver
+	self assert: game isOver
 ]
 
 { #category : #'test - playing' }
@@ -350,6 +350,5 @@ GameTest >> testStandardGameEndsSuccessfully [
 	| game |
 	game := testResource standardGame.
 	game playAnEntireGameWithoutPlayingCards.
-	self deny: game isNotOver.
-	
+	self assert: game isOver
 ]

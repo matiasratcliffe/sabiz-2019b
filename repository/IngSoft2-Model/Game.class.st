@@ -141,6 +141,11 @@ Game >> isNotOver [
 	^ (leaderBoard includesAll: self players) not
 ]
 
+{ #category : #accessingGameState }
+Game >> isOver [
+	^ self isNotOver not
+]
+
 { #category : #accessingGame }
 Game >> isPlayedBy: player [
 	^ self players includes: player
@@ -231,7 +236,7 @@ Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 	self playersStillPlaying
 		do: [ :each | 
 			| newState |
-			each == player
+			(each = player)
 				ifFalse: [ newState := board
 						nextStateFor: (self stateOf: each)
 						afterMoving: anAmount
