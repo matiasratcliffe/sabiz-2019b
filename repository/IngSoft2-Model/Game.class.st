@@ -97,7 +97,7 @@ Game >> dealCardTo: player [
 
 { #category : #accessingGame }
 Game >> deck [
-	^ deck copy
+	^ deck
 ]
 
 { #category : #accessingGame }

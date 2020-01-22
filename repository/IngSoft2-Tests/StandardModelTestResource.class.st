@@ -30,10 +30,10 @@ StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber [
 { #category : #gameCreation }
 StandardModelTestResource >> simplisticTestingGame [
 	^ Game
-		playedBy: {#Player1 . #Player2}
+		playedBy: {Player named: #Player1 . Player named: #Player2}
 		throwing: { SequentialDice withSequence: { 4 } }
 		on: (self effectlessBoardWithSpots: 10)
-		using: self standardDeckOfCards
+		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new})
 ]
 
 { #category : #boardCreation }

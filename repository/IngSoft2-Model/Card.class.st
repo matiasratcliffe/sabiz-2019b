@@ -17,7 +17,7 @@ Card class >> with: anEffect [
 
 { #category : #comparing }
 Card >> = aCard [
-	^ aCard class = Card and: [self effect class = aCard effect class]
+	^ aCard class = self class and: [self effect class = aCard effect class]
 ]
 
 { #category : #effect }

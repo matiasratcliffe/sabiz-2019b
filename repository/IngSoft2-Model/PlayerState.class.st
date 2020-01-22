@@ -26,6 +26,16 @@ PlayerState class >> on: spotNumber and: lapNumber holding: cards [
 	^ self on: spotNumber and: lapNumber and: 0 holding: cards
 ]
 
+{ #category : #comparing }
+PlayerState >> = aPlayerState [
+	^ aPlayerState class = self class and: [
+			(self spotNumber = aPlayerState spotNumber and: 
+			self lapNumber = aPlayerState lapNumber) and:
+			(self roundNumber = aPlayerState roundNumber and:
+			self cardsInHand = aPlayerState cardsInHand)
+		]
+]
+
 { #category : #accessing }
 PlayerState >> cardsInHand [
 	^ cards copy
@@ -36,6 +46,12 @@ PlayerState >> checkAvailabilityOf: aCard [
 	self
 		assert: (cards includes: aCard)
 		description: 'That card is not in the hand of the player'
+]
+
+{ #category : #comparing }
+PlayerState >> hash [
+	^ (self spotNumber asString , self lapNumber asString
+		, self roundNumber asString , self cardsInHand asString) hash
 ]
 
 { #category : #accessing }
@@ -57,16 +73,17 @@ PlayerState >> position [
 
 { #category : #printing }
 PlayerState >> printOn: aStream [
-	| buffer |
-	buffer := (cards asArray) asString.
 	aStream nextPut: $(.
 	self spotNumber printOn: aStream.
 	aStream nextPutAll: ', '.
 	self lapNumber printOn: aStream.
 	aStream nextPutAll: ', '.
 	self roundNumber printOn: aStream.
-	aStream nextPut: $).
-	aStream nextPutAll: (buffer copyFrom: 9 to: buffer size)
+	aStream nextPutAll: ')('.
+	self cardsInHand do: [ :each | 
+		each printOn: aStream
+	].
+	aStream nextPut: $)
 ]
 
 { #category : #accessing }

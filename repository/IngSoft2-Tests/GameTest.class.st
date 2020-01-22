@@ -96,6 +96,18 @@ GameTest >> testCantPlayMoreRoundsOnceGameIsOver [
 ]
 
 { #category : #'test - accessing' }
+GameTest >> testGameHasGivenDeckOfCards [
+	| game deck |
+	deck := testResource standardDeckOfCards.
+	game := Game
+		playedBy: testResource standardSetOfPlayers
+		throwing: testResource standardSetOfDices
+		on: (testResource effectlessBoardWithSpots: 10)
+		using: deck.
+	self assert: game deck equals: deck
+]
+
+{ #category : #'test - accessing' }
 GameTest >> testGameHasGivenNumberOfPlayers [
 	| game |
 	game := Game
@@ -292,7 +304,18 @@ GameTest >> testRiggedGameEndsAsExpected [
 
 { #category : #'tests - game state' }
 GameTest >> testRoundNumberIncreasesEveryRound [
-	self assert: false
+	| game |
+	game := Game playedBy: { player1. player2. player3 } 
+			throwing: { SequentialDice withSequence: { 1 } }
+			on: (testResource effectlessBoardWithSpots: 5)
+			using: testResource standardDeckOfCards.
+	self assert: game roundNumber equals: 1.
+	game playOneRoundWithoutPlayingCards.
+	self assert: game roundNumber equals: 2.
+	game playOneRoundWithoutPlayingCards.
+	self assert: game roundNumber equals: 3.
+	game playOneRoundWithoutPlayingCards.
+	self assert: game roundNumber equals: 4
 ]
 
 { #category : #'tests - game state' }
@@ -305,7 +328,21 @@ GameTest >> testSimplisticGameEndsSuccessfully [
 
 { #category : #'test - playing' }
 GameTest >> testSimplisticGameYieldsExpectedStateList [
-self assert: false
+	| game expectedHistory cards |
+	cards := { Card with: AccelerationEffect new. Card with: AccelerationEffect new }.
+	expectedHistory := {
+		PlayerState on: 1 and: 0 and: 0 holding: cards.
+		PlayerState on: 1 and: 0 and: 1 holding: cards.
+		PlayerState on: 5 and: 0 and: 1 holding: cards.
+		PlayerState on: 5 and: 0 and: 2 holding: cards.
+		PlayerState on: 9 and: 0 and: 2 holding: cards.
+		PlayerState on: 9 and: 0 and: 3 holding: cards.
+		PlayerState on: 3 and: 1 and: 3 holding: cards	
+	} asOrderedCollection.
+	game := testResource simplisticTestingGame.
+	game playAnEntireGameWithoutPlayingCards.
+	self assert: (game historyOf: player1) equals: expectedHistory.
+	self assert: (game historyOf: player2) equals: expectedHistory
 ]
 
 { #category : #'tests - game state' }

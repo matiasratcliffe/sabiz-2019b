@@ -17,7 +17,7 @@ PlayedCard class >> of: effect to: target [
 
 { #category : #comparing }
 PlayedCard >> = playedCard [
-	^ playedCard class = PlayedCard
+	^ playedCard class = self class
 		and: [ self effect class = playedCard effect class
 				and: target = playedCard target ]
 ]

@@ -38,6 +38,15 @@ TurnAllocatorTest >> testItsThePreviousPlayersTurnUntilAdvancingTheTurnWheel [
 ]
 
 { #category : #tests }
+TurnAllocatorTest >> testRemovingAPlayerAutomaticallyAdvancesTurnWheel [
+	| allocator |
+	allocator := TurnAllocator for: { player1. player2. player3 }.
+	allocator advanceTurnWheel.
+	allocator playerHasFinished: player2.
+	self assert: allocator playerWhoseTurnItIsToPlay equals: player3
+]
+
+{ #category : #tests }
 TurnAllocatorTest >> testTurnAllocatorRespectsExpectedOrder [
 	| turns |
 	turns := TurnAllocator for: { player1. player2. player3 }.

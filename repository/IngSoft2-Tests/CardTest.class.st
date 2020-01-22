@@ -152,6 +152,11 @@ CardTest >> testCantPlayAPermanentCardIfItsNotTheTurnOfThePlayer [
 		whoseDescriptionIncludes: 'Cant play a permanent card out of turn'
 ]
 
+{ #category : #tests }
+CardTest >> testCardTurnsIntoExpectedDescriptiveString [
+	self assert: (Card with: AccelerationEffect new) asString equals: 'an AccelerationCard'
+]
+
 { #category : #'tests - instant' }
 CardTest >> testInstantCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
 	| game cardToPlay board |
@@ -314,4 +319,22 @@ CardTest >> testSpeedEffectIncreasesByOneTheRollResultOfOnlyOnePlayer [
 	game throwDicesFor: player2.
 	self assert: (game positionOf: player1) equals: 3.
 	self assert: (game positionOf: player2) equals: 2
+]
+
+{ #category : #tests }
+CardTest >> testTwoIdenticalCardsYieldSameHash [
+	| card1 card2 |
+	card1 := Card with: AccelerationEffect new.
+	card2 := Card with: AccelerationEffect new.
+	self assert: card1 equals: card2.
+	self assert: card1 hash equals: card2 hash
+]
+
+{ #category : #tests }
+CardTest >> testTwoIdenticalPlayedCardsYieldSameHash [
+	| card1 card2 |
+	card1 := PlayedCard of: AccelerationEffect new to: testResource standardSetOfPlayers.
+	card2 := PlayedCard of: AccelerationEffect new to: testResource standardSetOfPlayers.
+	self assert: card1 equals: card2.
+	self assert: card1 hash equals: card2 hash
 ]

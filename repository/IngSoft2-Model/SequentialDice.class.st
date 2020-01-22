@@ -37,11 +37,6 @@ SequentialDice >> initializeWithSequence: sequence [
 	lastRolledIndex := sequence size - 1
 ]
 
-{ #category : #accessing }
-SequentialDice >> lastRolledIndex [
-	^ lastRolledIndex
-]
-
 { #category : #alteringSequence }
 SequentialDice >> removeFromSequence: element [
 	self checkPresenceOf: element.
@@ -57,9 +52,4 @@ SequentialDice >> removeFromSequence: element [
 SequentialDice >> roll [
 	lastRolledIndex := (lastRolledIndex + 1) % rollingSequence size.
 	^ rollingSequence at: lastRolledIndex + 1
-]
-
-{ #category : #accessing }
-SequentialDice >> sequenceSize [
-	^ rollingSequence size
 ]

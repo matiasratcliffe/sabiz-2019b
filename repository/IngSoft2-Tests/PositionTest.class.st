@@ -32,3 +32,8 @@ PositionTest >> testPositionHasGivenSpotNumber [
 	position := Position on: 5 and: 2.
 	self assert: position spotNumber equals: 5
 ]
+
+{ #category : #tests }
+PositionTest >> testPositionTurnsIntoExpectedDescriptiveString [
+	self assert: (Position on: 1 and: 1) asString equals: '(1, 1)'
+]

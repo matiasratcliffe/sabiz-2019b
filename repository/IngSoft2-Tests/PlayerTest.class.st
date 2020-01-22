@@ -36,6 +36,11 @@ PlayerTest >> testCardsInHandOfReturnsEmptyColectionIfThePlayerHasNoCards [
 ]
 
 { #category : #tests }
+PlayerTest >> testPlayerStateTurnsIntoExpectedDescriptiveString [
+	self assert: (PlayerState on: 1 and: 1 holding: {}) asString equals: '(1, 1, 0)()'
+]
+
+{ #category : #tests }
 PlayerTest >> testPlayerThatFinishedCantPlayACard [
 	| game card |
 	game := Game
@@ -53,6 +58,11 @@ PlayerTest >> testPlayerThatFinishedCantPlayACard [
 ]
 
 { #category : #tests }
+PlayerTest >> testPlayerTurnsIntoExpectedDescriptiveString [
+	self assert: (Player named: 'player') asString equals: 'player'
+]
+
+{ #category : #tests }
 PlayerTest >> testPlayingACardRemovesItFromHand [
 	| game cardToPlay |
 	game := Game
@@ -63,6 +73,15 @@ PlayerTest >> testPlayingACardRemovesItFromHand [
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game play: cardToPlay for: player1 on: game players. 
 	self assert: (game cardsInHandOf: player1) size equals: 1
+]
+
+{ #category : #tests }
+PlayerTest >> testTwoIdenticalPlayerStatesYieldSameHash [
+	| state1 state2 |
+	state1 := PlayerState on: 1 and: 1 holding: {  }.
+	state2 := PlayerState on: 1 and: 1 holding: {  }.
+	self assert: state1 equals: state2.
+	self assert: state1 hash equals: state2 hash
 ]
 
 { #category : #tests }

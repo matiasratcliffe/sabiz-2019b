@@ -168,6 +168,11 @@ SpotEffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingB
 	self assert: (game lapOf: player1) equals: 0
 ]
 
+{ #category : #tests }
+SpotEffectTest >> testSpotTurnsIntoExpectedDescriptiveString [
+	self assert: (Spot with: SpeedUpEffect new) asString equals: 'a SpeedUpSpot'
+]
+
 { #category : #'tests - regular' }
 SpotEffectTest >> testSpotWithRegularEffectDoesNothing [
 	| game board |
