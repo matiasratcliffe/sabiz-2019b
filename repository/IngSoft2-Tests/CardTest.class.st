@@ -9,26 +9,22 @@ Class {
 
 { #category : #resources }
 CardTest >> newCardTestingGameFor: cardEffect [
-	^ self
-		newCardTestingGameFor: cardEffect
-		on: (testResource effectlessBoardWithSpots: 10)
-]
-
-{ #category : #resources }
-CardTest >> newCardTestingGameFor: cardEffect on: board [
-	^ Game
-		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {1})}
-		on: board
-		using: (Deck with: {cardEffect})
+	^ self newCardTestingGameWith: (Deck with: {cardEffect})
 ]
 
 { #category : #resources }
 CardTest >> newCardTestingGameWith: deck [
+	^ self
+		newCardTestingGameWith: deck
+		on: (testResource effectlessBoardWithSpots: 10)
+]
+
+{ #category : #resources }
+CardTest >> newCardTestingGameWith: deck on: board [
 	^ Game
 		playedBy: {player1. player2}
 		throwing: {(SequentialDice withSequence: {1})}
-		on: (testResource effectlessBoardWithSpots: 10)
+		on: board
 		using: deck
 ]
 
@@ -159,12 +155,13 @@ CardTest >> testCardTurnsIntoExpectedDescriptiveString [
 
 { #category : #'tests - instant' }
 CardTest >> testInstantCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
-	| game cardToPlay board |
+	| game cardToPlay board deck |
+	deck := Deck with: {RepeatEffect new}.
 	board := testResource
 		effectTestingBoardWithSpots: 5
 		and: SpeedUpEffect new
 		at: 2.
-	game := self newCardTestingGameFor: RepeatEffect new on: board.
+	game := self newCardTestingGameWith: deck on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game throwDicesFor: player1.
 	self assert: (game positionOf: player1) equals: 1.
@@ -279,12 +276,13 @@ CardTest >> testRepeatCardCannotBePlayedIfDicesNeverRolled [
 
 { #category : #'tests - instant' }
 CardTest >> testRepeatCardRepeatesTheEffectOfTheSpotReachedAfterRollingDices [
-	| game cardToPlay board |
+	| game cardToPlay board deck |
+	deck := Deck with: {RepeatEffect new}.
 	board := testResource
 		effectTestingBoardWithSpots: 5
 		and: SpeedUpEffect new
 		at: 2.
-	game := self newCardTestingGameFor: RepeatEffect new on: board.
+	game := self newCardTestingGameWith: deck on: board.
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game throwDicesFor: player1.
 	self assert: (game positionOf: player1) equals: 1.
