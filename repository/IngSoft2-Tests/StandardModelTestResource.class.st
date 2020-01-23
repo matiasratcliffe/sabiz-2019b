@@ -12,8 +12,8 @@ StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effec
 	| spots |
 	spots := OrderedCollection
 		new: spotsNumber
-		withAll: (Spot with: NullEffect new).
-	spots at: spotNumber put: (Spot with: effect).
+		withAll: (RegularSpot with: NullEffect new).
+	spots at: spotNumber put: (RegularSpot with: effect).
 	^ Board with: spots andLaps: self standardNumberOfLaps
 ]
 
@@ -23,7 +23,7 @@ StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber [
 		with:
 			(OrderedCollection
 				new: spotsNumber
-				withAll: (Spot with: NullEffect new))
+				withAll: (RegularSpot with: NullEffect new))
 		andLaps: 1
 ]
 
