@@ -41,7 +41,8 @@ StandardModelTest >> testTestResourceYieldsValidObjects [
 	self assert: testResource standardGame class equals: Game.
 	self assert: testResource simplisticTestingGame class equals: Game.
 	self assert: testResource standardBoard class equals: Board.
-	self assert: (testResource effectlessBoardWithSpots: 10) class equals: Board.
 	self assert: (testResource standardBoardWithSpots: 10) class equals: Board.
-	self assert: (testResource effectTestingBoardWithSpots: 10 and: NullEffect new at: 4) class equals: Board
+	self assert: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10) class equals: Board.
+	self assert: (testResource effectlessBoardWithSpots: 10 throwing: {RandomDice withFaces: 4}) class equals: Board.
+	self assert: (testResource effectTestingBoardWithSpots: 10 and: NullEffect new at: 4 throwing: {RandomDice withFaces: 4}) class equals: Board
 ]

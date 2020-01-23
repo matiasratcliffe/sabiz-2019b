@@ -8,31 +8,47 @@ Class {
 }
 
 { #category : #boardCreation }
-StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber [
+StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber throwing: dices [
 	| spots |
 	spots := OrderedCollection
 		new: spotsNumber
 		withAll: (Spot with: NullEffect new).
 	spots at: spotNumber put: (Spot with: effect).
-	^ Board with: spots andLaps: self standardNumberOfLaps
+	^ Board
+		with: spots
+		andLaps: self standardNumberOfLaps
+		throwing: dices
 ]
 
 { #category : #boardCreation }
-StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber [
+StandardModelTestResource >> effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: spotsNumber [
 	^ Board
 		with:
 			(OrderedCollection
 				new: spotsNumber
 				withAll: (Spot with: NullEffect new))
 		andLaps: 1
+		throwing: {SequentialDice withSequence: {spotsNumber}}
+]
+
+{ #category : #boardCreation }
+StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber throwing: dices [
+	^ Board
+		with:
+			(OrderedCollection
+				new: spotsNumber
+				withAll: (Spot with: NullEffect new))
+		andLaps: 1
+		throwing: dices
 ]
 
 { #category : #gameCreation }
 StandardModelTestResource >> simplisticTestingGame [
+	| board |
+	board := self effectlessBoardWithSpots: 10 throwing: { SequentialDice withSequence: { 4 } }.
 	^ Game
 		playedBy: {Player named: #Player1 . Player named: #Player2}
-		throwing: { SequentialDice withSequence: { 4 } }
-		on: (self effectlessBoardWithSpots: 10)
+		on: board
 		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new})
 ]
 
@@ -43,7 +59,11 @@ StandardModelTestResource >> standardBoard [
 
 { #category : #boardCreation }
 StandardModelTestResource >> standardBoardWithSpots: spots [
-	^ Board with: self standardSpotDistribution andSpots: spots andLaps: self standardNumberOfLaps
+	^ Board
+		with: self standardEffectDistribution
+		andSpots: spots
+		andLaps: self standardNumberOfLaps
+		throwing: self standardSetOfDices
 ]
 
 { #category : #standardValues }
@@ -61,7 +81,6 @@ StandardModelTestResource >> standardDeckOfCards [
 StandardModelTestResource >> standardGame [
 	^ Game
 		playedBy: self standardSetOfPlayers
-		throwing: self standardSetOfDices
 		on: self standardBoard
 		using: self standardDeckOfCards
 ]
