@@ -386,6 +386,7 @@ Game >> totalDisplacementFor: player [
 { #category : #'private - updating' }
 Game >> updateStateFor: player with: aState [
 	| playerStates |
+	aState = (self stateOf: player) ifTrue: [ ^ self ].
 	playerStates := playersStates at: player.
 	playerStates add: aState
 ]

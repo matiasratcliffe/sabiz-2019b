@@ -37,6 +37,11 @@ SequentialDice >> initializeWithSequence: sequence [
 	lastRolledIndex := sequence size - 1
 ]
 
+{ #category : #accessing }
+SequentialDice >> maximumValue [
+	^ rollingSequence max
+]
+
 { #category : #alteringSequence }
 SequentialDice >> removeFromSequence: element [
 	self checkPresenceOf: element.
