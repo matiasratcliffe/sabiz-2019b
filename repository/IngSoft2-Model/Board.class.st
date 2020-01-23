@@ -29,11 +29,11 @@ Board class >> with: spotCollection andLaps: laps [
 ]
 
 { #category : #'instance creation' }
-Board class >> with: effectDistribution andSpots: spotsAmount andLaps: laps [
+Board class >> with: spotDistribution andSpots: spotsAmount andLaps: laps [
 	| spots |
 	spots := OrderedCollection new.
 	spotsAmount
-		timesRepeat: [ spots add: (Spot with: effectDistribution random) ].
+		timesRepeat: [ spots add: spotDistribution random ].
 	^ Board with: spots andLaps: laps
 ]
 
