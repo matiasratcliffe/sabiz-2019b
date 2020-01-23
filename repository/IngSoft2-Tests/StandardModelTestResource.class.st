@@ -77,33 +77,6 @@ StandardModelTestResource >> standardDeckOfCards [
 	^ Deck with: cardTypes asArray
 ]
 
-{ #category : #standardValues }
-StandardModelTestResource >> standardEffectDistribution [
-	^ OverallOccurrenceDistribution
-		with:
-			{(IndividualOccurrenceProbability
-				of: AtomicBombEffect new
-				withProbability: 2).
-			(IndividualOccurrenceProbability
-				of: NullEffect new
-				withProbability: 45).
-			(IndividualOccurrenceProbability
-				of: MoonWalkEffect new
-				withProbability: 5).
-			(IndividualOccurrenceProbability
-				of: SpeedUpEffect new
-				withProbability: 15).
-			(IndividualOccurrenceProbability
-				of: TimeMachineEffect new
-				withProbability: 8).
-			(IndividualOccurrenceProbability
-				of: WormHoleEffect new
-				withProbability: 15).
-			(IndividualOccurrenceProbability
-				of: CardGivingEffect new
-				withProbability: 10)}
-]
-
 { #category : #gameCreation }
 StandardModelTestResource >> standardGame [
 	^ Game
@@ -132,4 +105,31 @@ StandardModelTestResource >> standardSetOfPlayers [
 	^ {(Player named: #Player1).
 	(Player named: #Player2).
 	(Player named: #Player3)}
+]
+
+{ #category : #standardValues }
+StandardModelTestResource >> standardSpotDistribution [
+	^ OverallOccurrenceDistribution
+		with:
+			{(IndividualOccurrenceProbability
+				of: (Spot with: AtomicBombEffect new)
+				withProbability: 2).
+			(IndividualOccurrenceProbability
+				of: (Spot with: NullEffect new)
+				withProbability: 45).
+			(IndividualOccurrenceProbability
+				of: (Spot with: MoonWalkEffect new)
+				withProbability: 5).
+			(IndividualOccurrenceProbability
+				of: (Spot with: SpeedUpEffect new)
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: (Spot with: TimeMachineEffect new)
+				withProbability: 8).
+			(IndividualOccurrenceProbability
+				of: (Spot with: WormHoleEffect new)
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: (Spot with: CardGivingEffect new)
+				withProbability: 10)}
 ]
