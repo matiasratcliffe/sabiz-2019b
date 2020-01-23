@@ -20,6 +20,11 @@ RegularSpot >> effect [
 	^ effect
 ]
 
+{ #category : #movement }
+RegularSpot >> getRollMultiplierRolling: rollSum with: Dices [
+	^ 1
+]
+
 { #category : #'instance creation' }
 RegularSpot >> initializeWith: anEffect [
 	effect := anEffect

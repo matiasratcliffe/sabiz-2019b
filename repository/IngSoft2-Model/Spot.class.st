@@ -12,7 +12,7 @@ Spot >> effect [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #movement }
 Spot >> getRollMultiplierRolling: rollSum with: Dices [
 	self subclassResponsibility
 ]
