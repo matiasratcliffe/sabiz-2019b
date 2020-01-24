@@ -40,18 +40,18 @@ Board class >> with: spotCollection andLaps: laps throwing: dices [
 		throwing: dices
 ]
 
-{ #category : #accessing }
-Board >> dices [
-	^ dices copy
-]
-
 { #category : #'instance creation' }
-Board class >> with: effectDistribution andSpots: spotsAmount andLaps: laps throwing: dices [
+Board class >> with: spotDistribution andSpots: spotsAmount andLaps: laps throwing: dices [
 	| spots |
 	spots := OrderedCollection new.
 	spotsAmount
-		timesRepeat: [ spots add: (RegularSpot with: effectDistribution random) ].
+		timesRepeat: [ spots add: spotDistribution random ].
 	^ Board with: spots andLaps: laps throwing: dices
+]
+
+{ #category : #accessing }
+Board >> dices [
+	^ dices copy
 ]
 
 { #category : #accessing }

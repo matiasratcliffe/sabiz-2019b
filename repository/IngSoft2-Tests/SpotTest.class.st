@@ -44,6 +44,14 @@ SpotTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 	self assert: (game cardsInHandOf: player1) size equals: 3
 ]
 
+{ #category : #'tests - jailspot' }
+SpotTest >> testJailSpotPreventsFromEscapingUntilPlayerGetsMaximumRollResult [
+]
+
+{ #category : #'tests - jailspot' }
+SpotTest >> testJailSpotProducesNoEffectAfterLandingOnIt [
+]
+
 { #category : #'tests - moonwalk' }
 SpotTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
 	| game board |
@@ -63,14 +71,6 @@ SpotTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
 	self assert: (game playerHasFinished: player1).
 	self assert: (game positionOf: player1) equals: 1.
 	self assert: (game positionOf: player2) equals: 5
-]
-
-{ #category : #'tests - jailspot' }
-SpotTest >> testJailSpotPreventsFromEscapingUntilPlayerGetsMaximumRollResult [
-]
-
-{ #category : #'tests - jailspot' }
-SpotTest >> testJailSpotProducesNoEffectAfterLandingOnIt [
 ]
 
 { #category : #'tests - moonwalk' }
@@ -195,7 +195,7 @@ SpotTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackFou
 ]
 
 { #category : #tests }
-SpotTest >> testSpotTurnsIntoExpectedDescriptiveString [
+SpotTest >> testRegularSpotTurnsIntoExpectedDescriptiveString [
 	self assert: (RegularSpot with: SpeedUpEffect new) asString equals: 'a SpeedUpSpot'
 ]
 

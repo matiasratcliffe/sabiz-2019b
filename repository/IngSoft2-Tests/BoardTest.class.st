@@ -79,7 +79,6 @@ BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsEl
 { #category : #'tests - instance creation' }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 	self
-<<<<<<< HEAD
 		should: [ Board with: {(RegularSpot with: NullEffect new)} andLaps: 0 throwing: {RandomDice withFaces: 4} ]
 		raise: AssertionFailure	
 		whoseDescriptionIncludes: 'Invalid number of laps';

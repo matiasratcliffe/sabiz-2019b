@@ -13,7 +13,7 @@ StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effec
 	spots := OrderedCollection
 		new: spotsNumber
 		withAll: (RegularSpot with: NullEffect new).
-	spots at: spotNumber put: (Spot with: effect).
+	spots at: spotNumber put: (RegularSpot with: effect).
 	^ Board
 		with: spots
 		andLaps: self standardNumberOfLaps
@@ -37,7 +37,7 @@ StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber throwing: dic
 		with:
 			(OrderedCollection
 				new: spotsNumber
-				withAll: (Spot with: NullEffect new))
+				withAll: (RegularSpot with: NullEffect new))
 		andLaps: 1
 		throwing: dices
 ]
@@ -60,7 +60,7 @@ StandardModelTestResource >> standardBoard [
 { #category : #boardCreation }
 StandardModelTestResource >> standardBoardWithSpots: spots [
 	^ Board
-		with: self standardEffectDistribution
+		with: self standardSpotDistribution
 		andSpots: spots
 		andLaps: self standardNumberOfLaps
 		throwing: self standardSetOfDices
@@ -112,24 +112,24 @@ StandardModelTestResource >> standardSpotDistribution [
 	^ OverallOccurrenceDistribution
 		with:
 			{(IndividualOccurrenceProbability
-				of: (Spot with: AtomicBombEffect new)
+				of: (RegularSpot with: AtomicBombEffect new)
 				withProbability: 2).
 			(IndividualOccurrenceProbability
-				of: (Spot with: NullEffect new)
+				of: (RegularSpot with: NullEffect new)
 				withProbability: 45).
 			(IndividualOccurrenceProbability
-				of: (Spot with: MoonWalkEffect new)
+				of: (RegularSpot with: MoonWalkEffect new)
 				withProbability: 5).
 			(IndividualOccurrenceProbability
-				of: (Spot with: SpeedUpEffect new)
+				of: (RegularSpot with: SpeedUpEffect new)
 				withProbability: 15).
 			(IndividualOccurrenceProbability
-				of: (Spot with: TimeMachineEffect new)
+				of: (RegularSpot with: TimeMachineEffect new)
 				withProbability: 8).
 			(IndividualOccurrenceProbability
-				of: (Spot with: WormHoleEffect new)
+				of: (RegularSpot with: WormHoleEffect new)
 				withProbability: 15).
 			(IndividualOccurrenceProbability
-				of: (Spot with: CardGivingEffect new)
+				of: (RegularSpot with: CardGivingEffect new)
 				withProbability: 10)}
 ]

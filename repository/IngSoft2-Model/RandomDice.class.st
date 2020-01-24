@@ -25,7 +25,7 @@ RandomDice >> initializeWith: numberOfFaces [
 
 { #category : #accessing }
 RandomDice >> maximumValue [
-	^ faces
+	^ faces max
 ]
 
 { #category : #rolling }

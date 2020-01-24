@@ -15,29 +15,6 @@ DiceTest >> testCantCreateSequentialDiceWithEmptySequence [
 		whoseDescriptionIncludes: 'Tried to create a sequence dice with an empty sequence'
 ]
 
-{ #category : #sequentialDiceTests }
-DiceTest >> testCantRemoveLastElementFromSequentialDice [
-	| dice |
-	dice := SequentialDice withSequence: {1 . 2 . 3}.
-	dice removeFromSequence: 1.
-	dice removeFromSequence: 2.
-	self
-		should: [ dice removeFromSequence: 3 ]
-		raise: AssertionFailure
-		whoseDescriptionIncludes: 'The last element of a sequence cannot be removed'
-]
-
-{ #category : #sequentialDiceTests }
-DiceTest >> testCantRemoveUnexistingElementFromSequentialDice [
-	| dice |
-	dice := SequentialDice withSequence: {1 . 2}.
-	dice removeFromSequence: 1.
-	self
-		should: [ dice removeFromSequence: 1 ]
-		raise: AssertionFailure
-		whoseDescriptionIncludes: 'This element is not present in the sequence of the dice'
-]
-
 { #category : #randomDiceTests }
 DiceTest >> testRandomDiceCreationFailsWhenGivenNumberOfFacesIsLessThanFour [
 	self
@@ -57,20 +34,9 @@ DiceTest >> testRandomDiceRollsValidNumber [
 
 { #category : #randomDiceTests }
 DiceTest >> testRandomDiceYieldsCorrectMaximumValue [
-]
-
-{ #category : #sequentialDiceTests }
-DiceTest >> testRemovingElementFromSequentialDiceYieldsExpectedSequence [
-	| list  dice |
-	list := OrderedCollection new.
-	dice := SequentialDice withSequence: { 1. 2. 3 }.
-	list add: dice roll.
-	list add: dice roll.
-	list add: dice roll.
-	dice removeFromSequence: 2.
-	list add: dice roll.
-	list add: dice roll.
-	self assert: list asArray equals: { 1. 2. 3. 1. 3 }
+	| dice |
+	dice := RandomDice withFaces: 6.
+	self assert: dice maximumValue equals: 6.
 ]
 
 { #category : #sequentialDiceTests }
@@ -83,16 +49,8 @@ DiceTest >> testSequentialDiceRollsExpectedSequence [
 ]
 
 { #category : #sequentialDiceTests }
-DiceTest >> testSequentialDiceRollsExpectedSequenceAfterRemovingElement [
-	| dice rolledSequence |
-	rolledSequence := OrderedCollection new.
-	dice := SequentialDice withSequence: {1 . 2 . 3}.
-	3 timesRepeat: [rolledSequence add: dice roll].
-	dice removeFromSequence: 1.
-	rolledSequence add: dice roll.
-	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 2}
-]
-
-{ #category : #sequentialDiceTests }
 DiceTest >> testSequentialDiceYieldsCorrectMaximumValue [
+	| dice |
+	dice := SequentialDice withSequence: {1. 4. 6. 3}.
+	self assert: dice maximumValue equals: 6.
 ]

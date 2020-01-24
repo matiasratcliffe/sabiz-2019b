@@ -17,8 +17,3 @@ JailSpot >> getRollMultiplierRolling: rollSum with: dices [
 	rollSum = dices maximumValue ifTrue: [ ^ 1 ].
 	^ 0.
 ]
-
-{ #category : #printing }
-JailSpot >> printOn: aStream [
-	self className printOn: aStream
-]
