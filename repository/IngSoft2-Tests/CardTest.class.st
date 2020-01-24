@@ -16,7 +16,7 @@ CardTest >> newCardTestingGameFor: cardEffect [
 CardTest >> newCardTestingGameWith: deck [
 	| board |
 	board := testResource
-		effectlessBoardWithSpots: 10
+		effectlessRegularBoardWithSpots: 10
 		throwing: {(SequentialDice withSequence: {1})}.
 	^ self
 		newCardTestingGameWith: deck
@@ -36,7 +36,7 @@ CardTest >> testARepeatCardCantBePlayedOnAPlayerThatFinished [
 	| game card |
 	game := Game
 		playedBy: {player1. player2}
-		on: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
 		using: (GimmickDeck withSequence: {Card with: RepeatEffect new}).
 	game throwDicesFor: player1.
 	card := (game cardsInHandOf: player2) first.
@@ -51,7 +51,7 @@ CardTest >> testASpeedCardCantBePlayedOnAPlayerThatFinished [
 	| game card |
 	game := Game
 		playedBy: {player1. player2}
-		on: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
 		using: (GimmickDeck withSequence: {Card with: SpeedEffect new}).
 	game throwDicesFor: player1.
 	card := (game cardsInHandOf: player2) first.
@@ -92,7 +92,7 @@ CardTest >> testAnOverloadCardCantBePlayedOnAPlayerThatFinished [
 	| game card |
 	game := Game
 		playedBy: {player1. player2}
-		on: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
 		using: (GimmickDeck withSequence: {Card with: OverloadEffect new}).
 	game throwDicesFor: player1.
 	card := (game cardsInHandOf: player2) first.
@@ -155,19 +155,11 @@ CardTest >> testCardTurnsIntoExpectedDescriptiveString [
 
 { #category : #'tests - instant' }
 CardTest >> testInstantCardCanBePlayedEvenIfItIsNotTheTurnOfThePlayer [
-	| game cardToPlay board deck |
-	deck := Deck with: {RepeatEffect new}.
-	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: SpeedUpEffect new
-		at: 2
-		throwing: {(SequentialDice withSequence: {1})}.
-	game := self newCardTestingGameWith: deck on: board.
-	cardToPlay := (game cardsInHandOf: player1) first.
+	| game cardToPlay |
+	game := self newCardTestingGameFor: RepeatEffect new.
 	game throwDicesFor: player1.
-	self assert: (game positionOf: player1) equals: 1.
-	self assert: (game lapOf: player1) equals: 1.
 	self assert: game playerWhoseTurnItIsToPlay equals: player2.
+	cardToPlay := (game cardsInHandOf: player1) first.
 	game play: cardToPlay for: player1 on: {player1}.
 	
 ]
@@ -280,8 +272,8 @@ CardTest >> testRepeatCardRepeatesTheEffectOfTheSpotReachedAfterRollingDices [
 	| game cardToPlay board deck |
 	deck := Deck with: {RepeatEffect new}.
 	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: SpeedUpEffect new
+		spotTestingBoardWithSpots: 5
+		and: (RegularSpot with: SpeedUpEffect new)
 		at: 2
 		throwing: {(SequentialDice withSequence: {1})}.
 	game := self newCardTestingGameWith: deck on: board.

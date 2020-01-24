@@ -32,14 +32,14 @@ BoardTest >> testBoardHasGivenSetOfDices [
 	| board dice1 dice2 |
 	dice1 := RandomDice withFaces: 6.
 	dice2 := SequentialDice withSequence: {4}.
-	board := testResource effectlessBoardWithSpots: 10 throwing: { dice1. dice2 }.
+	board := testResource effectlessRegularBoardWithSpots: 10 throwing: { dice1. dice2 }.
 	self assert: (board dices includesAll: {dice1. dice2})
 ]
 
 { #category : #'tests - instance creation' }
 BoardTest >> testCantCreateBoardWithoutDices [
 	self
-		should: [ testResource effectlessBoardWithSpots: 10 throwing: {  } ]
+		should: [ testResource effectlessRegularBoardWithSpots: 10 throwing: {  } ]
 		raise: AssertionFailure
 		whoseDescriptionIncludes: 'Tried to create a board with an invalid set of Dices'
 ]
@@ -59,21 +59,6 @@ BoardTest >> testCustomBoardHasGivenEffectsInTheCorrespondingPosition [
 	board := Board with: spots andLaps: 2 throwing: {RandomDice withFaces: 4}.
 	spots
 		withIndexDo: [ :spot :index | self assert: (board effectAt: index) equals: spot effect ]
-]
-
-{ #category : #'test - accessing' }
-BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsElsewhere [
-	| effect board |
-	effect := MoonWalkEffect new.
-	board := testResource
-		effectTestingBoardWithSpots: testResource standardNumberOfSpots
-		and: effect
-		at: 1
-		throwing: {RandomDice withFaces: 4}.
-	1 to: board numberOfSpots do: [ :index | 
-		index == 1
-			ifTrue: [ self assert: (board effectAt: index) equals: effect ]
-			ifFalse: [ self assert: (board effectAt: index) class equals: NullEffect ] ]
 ]
 
 { #category : #'tests - instance creation' }
@@ -96,4 +81,19 @@ BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfSpots [
 		should: [ testResource standardBoardWithSpots: -1 ]
 		raise: AssertionFailure
 		whoseDescriptionIncludes: 'Invalid number of spots'
+]
+
+{ #category : #'test - accessing' }
+BoardTest >> testSpotTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsElsewhere [
+	| spotToTest board |
+	spotToTest := RegularSpot with: MoonWalkEffect new.
+	board := testResource
+		spotTestingBoardWithSpots: testResource standardNumberOfSpots
+		and: spotToTest
+		at: 1
+		throwing: {RandomDice withFaces: 4}.
+	1 to: board numberOfSpots do: [ :index | 
+		index == 1
+			ifTrue: [ self assert: (board effectAt: index) equals: spotToTest effect ]
+			ifFalse: [ self assert: (board effectAt: index) class equals: NullEffect ] ]
 ]

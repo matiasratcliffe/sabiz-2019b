@@ -43,7 +43,7 @@ PlayerTest >> testPlayerThatFinishedCantPlayACard [
 	| game card |
 	game := Game
 		playedBy: {player1. player2}
-		on: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
 		using: (GimmickDeck withSequence: {(Card with: RepeatEffect new)}).
 	game throwDicesFor: player1.
 	game throwDicesFor: player2.

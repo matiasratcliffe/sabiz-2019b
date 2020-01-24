@@ -8,20 +8,7 @@ Class {
 }
 
 { #category : #boardCreation }
-StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber throwing: dices [
-	| spots |
-	spots := OrderedCollection
-		new: spotsNumber
-		withAll: (RegularSpot with: NullEffect new).
-	spots at: spotNumber put: (RegularSpot with: effect).
-	^ Board
-		with: spots
-		andLaps: self standardNumberOfLaps
-		throwing: dices
-]
-
-{ #category : #boardCreation }
-StandardModelTestResource >> effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: spotsNumber [
+StandardModelTestResource >> effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: spotsNumber [
 	^ Board
 		with:
 			(OrderedCollection
@@ -32,7 +19,7 @@ StandardModelTestResource >> effectlessBoardWithDiceLoadedWithSpotsNumberAndSpot
 ]
 
 { #category : #boardCreation }
-StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber throwing: dices [
+StandardModelTestResource >> effectlessRegularBoardWithSpots: spotsNumber throwing: dices [
 	^ Board
 		with:
 			(OrderedCollection
@@ -45,11 +32,24 @@ StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber throwing: dic
 { #category : #gameCreation }
 StandardModelTestResource >> simplisticTestingGame [
 	| board |
-	board := self effectlessBoardWithSpots: 10 throwing: { SequentialDice withSequence: { 4 } }.
+	board := self effectlessRegularBoardWithSpots: 10 throwing: { SequentialDice withSequence: { 4 } }.
 	^ Game
 		playedBy: {Player named: #Player1 . Player named: #Player2}
 		on: board
 		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new})
+]
+
+{ #category : #boardCreation }
+StandardModelTestResource >> spotTestingBoardWithSpots: spotsNumber and: spotToTest at: spotNumber throwing: dices [
+	| spots |
+	spots := OrderedCollection
+		new: spotsNumber
+		withAll: (RegularSpot with: NullEffect new).
+	spots at: spotNumber put: spotToTest.
+	^ Board
+		with: spots
+		andLaps: self standardNumberOfLaps
+		throwing: dices
 ]
 
 { #category : #boardCreation }

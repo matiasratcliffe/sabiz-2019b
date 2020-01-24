@@ -115,7 +115,7 @@ GameTest >> testGameShowsCorrectPlayersThatAreStillPlayingAfterSomeoneFinishes [
 	| game |
 	game := Game
 		playedBy: {player1. player2}
-		on: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
 		using: testResource standardDeckOfCards.
 	self assert: game players equals: game playersStillPlaying.
 	game throwDicesFor: player1.
@@ -126,7 +126,7 @@ GameTest >> testGameShowsCorrectPlayersThatAreStillPlayingAfterSomeoneFinishes [
 GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10
+		effectlessRegularBoardWithSpots: 10
 		throwing: {(SequentialDice withSequence: {3 . -4})}.
 	game := Game
 		playedBy: {player1}
@@ -141,7 +141,7 @@ GameTest >> testGoingBackToLastSpotDecreasesTheCorrectNumberOfLapsOfAPlayer [
 GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10
+		effectlessRegularBoardWithSpots: 10
 		throwing: {(SequentialDice withSequence: {3 . 4 . 11})}.
 	game := Game
 		playedBy: {player1. player2. player3}
@@ -157,7 +157,7 @@ GameTest >> testOngoingGameShowsExpectedPlayerPlacesAfterOneRound [
 GameTest >> testPlayerCantPlayUnlessItsHisTurn [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10
+		effectlessRegularBoardWithSpots: 10
 		throwing: {SequentialDice withSequence: {1}}.
 	game := Game
 		playedBy: {player1. player2}
@@ -180,7 +180,7 @@ GameTest >> testPlayerCantPlayUnlessItsHisTurn [
 GameTest >> testPlayerCompletesALapAfterGoingOverTheLastSpot [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10 
+		effectlessRegularBoardWithSpots: 10 
 		throwing: {(SequentialDice withSequence: {7 . 4})}.
 	game := Game
 		playedBy: {player1}
@@ -196,7 +196,7 @@ GameTest >> testPlayerOneWonTheGame [
 	| game |
 	game := Game
 		playedBy: {player1. player2}
-		on: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
 		using: testResource standardDeckOfCards.
 	game playAnEntireGameWithoutPlayingCards.
 	self assert: game winner equals: player1
@@ -206,7 +206,7 @@ GameTest >> testPlayerOneWonTheGame [
 GameTest >> testPlayersThatFinishedAreNoLongerInTurnWheel [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10
+		effectlessRegularBoardWithSpots: 10
 		throwing: {(SequentialDice withSequence: {10. 1})}.
 	game := Game
 		playedBy: {player1. player2}
@@ -226,7 +226,7 @@ GameTest >> testPlayersThatFinishedAreNoLongerInTurnWheel [
 GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10 
+		effectlessRegularBoardWithSpots: 10 
 		throwing: {(SequentialDice withSequence: {-4 . 4})}.
 	game := Game
 		playedBy: {player1}
@@ -242,7 +242,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterCompletingAndLosingALap [
 GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10 
+		effectlessRegularBoardWithSpots: 10 
 		throwing: {(SequentialDice withSequence: {-4 . 4})}.
 	game := Game
 		playedBy: {player1}
@@ -258,7 +258,7 @@ GameTest >> testPositionOfPlayerIsCorrectAfterLosingAndCompletingALap [
 GameTest >> testReachingLastSpotWithoutRoundingTheBoardDoesNotIncrementLapNumber [
 	| game board |
 	board := testResource
-		effectlessBoardWithSpots: 10 
+		effectlessRegularBoardWithSpots: 10 
 		throwing: {(SequentialDice withSequence: {9})}.
 	game := Game
 		playedBy: {player1}
@@ -273,7 +273,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 	| game |
 	game := Game
 		playedBy: {player1. player2. player3}
-		on: (testResource effectlessBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
 		using: testResource standardDeckOfCards.
 	game playAnEntireGameWithoutPlayingCards.
 	self
@@ -285,7 +285,7 @@ GameTest >> testRiggedGameEndsAsExpected [
 GameTest >> testRoundNumberIncreasesEveryRound [
 	| game board |
 	board :=  testResource
-		effectlessBoardWithSpots: 5
+		effectlessRegularBoardWithSpots: 5
 		throwing: {SequentialDice withSequence: {1}}.
 	game := Game
 		playedBy: { player1. player2. player3 } 

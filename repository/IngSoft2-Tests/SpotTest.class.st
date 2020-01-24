@@ -11,8 +11,8 @@ Class {
 SpotTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 10
-		and: AtomicBombEffect new
+		spotTestingBoardWithSpots: 10
+		and: (RegularSpot with: AtomicBombEffect new)
 		at: 3
 		throwing: {(SequentialDice withSequence: {13 . 1})}.
 	game := Game
@@ -32,8 +32,8 @@ SpotTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
 SpotTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: CardGivingEffect new
+		spotTestingBoardWithSpots: 5
+		and: (RegularSpot with: CardGivingEffect new)
 		at: 5
 		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
@@ -56,8 +56,8 @@ SpotTest >> testJailSpotProducesNoEffectAfterLandingOnIt [
 SpotTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 10
-		and: MoonWalkEffect new
+		spotTestingBoardWithSpots: 10
+		and: (RegularSpot with: MoonWalkEffect new)
 		at: 5
 		throwing: {(SequentialDice withSequence: {10 . 2})}.
 	game := Game
@@ -77,8 +77,8 @@ SpotTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
 SpotTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 	| board game |
 	board := testResource
-		effectTestingBoardWithSpots: 8
-		and: (MoonWalkEffect goingBack: 3)
+		spotTestingBoardWithSpots: 8
+		and: (RegularSpot with: (MoonWalkEffect goingBack: 3))
 		at: 7
 		throwing: {(SequentialDice withSequence: {1. 2. 3})}.
 	game := Game
@@ -100,8 +100,8 @@ SpotTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 SpotTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesBackToFirstSpotMaintainingLaps [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: AtomicBombEffect new
+		spotTestingBoardWithSpots: 5
+		and: (RegularSpot with: AtomicBombEffect new)
 		at: 3
 		throwing: {(SequentialDice withSequence: {8. 3. 1})}.
 	game := Game
@@ -128,8 +128,8 @@ SpotTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesBackToF
 SpotTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 9
-		and: SpeedUpEffect new
+		spotTestingBoardWithSpots: 9
+		and: (RegularSpot with: SpeedUpEffect new)
 		at: 5
 		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
@@ -144,8 +144,8 @@ SpotTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 6
-		and: SpeedUpEffect new
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: SpeedUpEffect new)
 		at: 5
 		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
@@ -162,8 +162,8 @@ SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForward
 SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 6
-		and: WormHoleEffect new
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: WormHoleEffect new)
 		at: 6
 		throwing: {(SequentialDice withSequence: {5})}.
 	game := Game
@@ -178,8 +178,8 @@ SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 SpotTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackFourPositions [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 6
-		and: WormHoleEffect new
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: WormHoleEffect new)
 		at: 2
 		throwing: {(SequentialDice withSequence: {6. 1})}.
 	game := Game
@@ -202,7 +202,7 @@ SpotTest >> testRegularSpotTurnsIntoExpectedDescriptiveString [
 { #category : #'tests - regular' }
 SpotTest >> testSpotWithRegularEffectDoesNothing [
 	| game board |
-	board := testResource effectlessBoardWithSpots: 5
+	board := testResource effectlessRegularBoardWithSpots: 5
 		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
 		playedBy: {player1}
@@ -216,8 +216,8 @@ SpotTest >> testSpotWithRegularEffectDoesNothing [
 SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 6
-		and: TimeMachineEffect new
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: TimeMachineEffect new)
 		at: 5
 		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
@@ -233,8 +233,8 @@ SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZe
 SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 6
-		and: TimeMachineEffect new
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: TimeMachineEffect new)
 		at: 5
 		throwing: {(SequentialDice withSequence: {2 . 8})}.
 	game := Game
