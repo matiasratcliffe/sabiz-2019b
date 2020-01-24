@@ -12,7 +12,7 @@ StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effec
 	| spots |
 	spots := OrderedCollection
 		new: spotsNumber
-		withAll: (Spot with: NullEffect new).
+		withAll: (RegularSpot with: NullEffect new).
 	spots at: spotNumber put: (Spot with: effect).
 	^ Board
 		with: spots
@@ -26,7 +26,7 @@ StandardModelTestResource >> effectlessBoardWithDiceLoadedWithSpotsNumberAndSpot
 		with:
 			(OrderedCollection
 				new: spotsNumber
-				withAll: (Spot with: NullEffect new))
+				withAll: (RegularSpot with: NullEffect new))
 		andLaps: 1
 		throwing: {SequentialDice withSequence: {spotsNumber}}
 ]

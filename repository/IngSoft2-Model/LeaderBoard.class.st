@@ -44,11 +44,6 @@ LeaderBoard >> initialize [
 ]
 
 { #category : #accessing }
-LeaderBoard >> isNotEmpty [
-	^ elements isNotEmpty
-]
-
-{ #category : #accessing }
 LeaderBoard >> size [
 	^ elements size
 ]
@@ -56,7 +51,7 @@ LeaderBoard >> size [
 { #category : #accessing }
 LeaderBoard >> winner [
 	self
-		assert: self isNotEmpty
+		assert: elements isNotEmpty
 		description: 'No one has reached the end yet'.
-	^ self at: 1
+	^ elements first
 ]

@@ -55,6 +55,10 @@ DiceTest >> testRandomDiceRollsValidNumber [
 	self assert: (result > 0 and: result <= faces)
 ]
 
+{ #category : #randomDiceTests }
+DiceTest >> testRandomDiceYieldsCorrectMaximumValue [
+]
+
 { #category : #sequentialDiceTests }
 DiceTest >> testRemovingElementFromSequentialDiceYieldsExpectedSequence [
 	| list  dice |
@@ -87,4 +91,8 @@ DiceTest >> testSequentialDiceRollsExpectedSequenceAfterRemovingElement [
 	dice removeFromSequence: 1.
 	rolledSequence add: dice roll.
 	self assert: rolledSequence asArray equals: {1 . 2 . 3 . 2}
+]
+
+{ #category : #sequentialDiceTests }
+DiceTest >> testSequentialDiceYieldsCorrectMaximumValue [
 ]

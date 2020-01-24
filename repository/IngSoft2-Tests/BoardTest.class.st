@@ -9,14 +9,14 @@ Class {
 
 { #category : #'test support' }
 BoardTest >> allSpotTypes [
-	^ (SpotEffect allSubclasses collect: [ :each | Spot with: each new ])
+	^ (SpotEffect allSubclasses collect: [ :each | RegularSpot with: each new ])
 		asArray
 ]
 
 { #category : #'test - accessing' }
 BoardTest >> testBoardHasGivenNumberOfLaps [
 	| board |
-	board := Board with: {Spot with: NullEffect new} andLaps: 2 throwing: {RandomDice withFaces: 4}.
+	board := Board with: {RegularSpot with: NullEffect new} andLaps: 2 throwing: {RandomDice withFaces: 4}.
 	self assert: board numberOfLaps equals: 2
 ]
 
@@ -79,10 +79,11 @@ BoardTest >> testEffectTestingBoardHasGivenEffectAtDesiredPositionAndNoEffectsEl
 { #category : #'tests - instance creation' }
 BoardTest >> testProhibitsCreatingBoardWithInvalidNumberOfLaps [
 	self
-		should: [ Board with: {(Spot with: NullEffect new)} andLaps: 0 throwing: {RandomDice withFaces: 4} ]
+<<<<<<< HEAD
+		should: [ Board with: {(RegularSpot with: NullEffect new)} andLaps: 0 throwing: {RandomDice withFaces: 4} ]
 		raise: AssertionFailure	
 		whoseDescriptionIncludes: 'Invalid number of laps';
-		should: [ Board with: {(Spot with: NullEffect new)} andLaps: -1 throwing: {RandomDice withFaces: 4} ]
+		should: [ Board with: {(RegularSpot with: NullEffect new)} andLaps: -1 throwing: {RandomDice withFaces: 4} ]
 		raise: AssertionFailure
 		whoseDescriptionIncludes: 'Invalid number of laps'
 ]

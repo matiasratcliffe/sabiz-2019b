@@ -2,13 +2,13 @@
 This class contains tests about spots.
 "
 Class {
-	#name : #SpotEffectTest,
+	#name : #SpotTest,
 	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
-SpotEffectTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
+{ #category : #'tests - atomicbomb' }
+SpotTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 10
@@ -29,7 +29,7 @@ SpotEffectTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
 ]
 
 { #category : #'tests - cardgiving' }
-SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
+SpotTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 5
@@ -44,8 +44,8 @@ SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 	self assert: (game cardsInHandOf: player1) size equals: 3
 ]
 
-{ #category : #tests }
-SpotEffectTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
+{ #category : #'tests - moonwalk' }
+SpotTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 10
@@ -65,8 +65,16 @@ SpotEffectTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
 	self assert: (game positionOf: player2) equals: 5
 ]
 
+{ #category : #'tests - jailspot' }
+SpotTest >> testJailSpotPreventsFromEscapingUntilPlayerGetsMaximumRollResult [
+]
+
+{ #category : #'tests - jailspot' }
+SpotTest >> testJailSpotProducesNoEffectAfterLandingOnIt [
+]
+
 { #category : #'tests - moonwalk' }
-SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
+SpotTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 	| board game |
 	board := testResource
 		effectTestingBoardWithSpots: 8
@@ -89,7 +97,7 @@ SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 ]
 
 { #category : #'tests - atomicbomb' }
-SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesBackToFirstSpotMaintainingLaps [
+SpotTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesBackToFirstSpotMaintainingLaps [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 5
@@ -117,7 +125,7 @@ SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesB
 ]
 
 { #category : #'tests - speedup' }
-SpotEffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
+SpotTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 9
@@ -133,7 +141,7 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 ]
 
 { #category : #'tests - speedup' }
-SpotEffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
+SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 6
@@ -151,7 +159,7 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingF
 ]
 
 { #category : #'tests - wormhole' }
-SpotEffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
+SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 6
@@ -167,7 +175,7 @@ SpotEffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 ]
 
 { #category : #'tests - wormhole' }
-SpotEffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackFourPositions [
+SpotTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackFourPositions [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 6
@@ -187,12 +195,12 @@ SpotEffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingB
 ]
 
 { #category : #tests }
-SpotEffectTest >> testSpotTurnsIntoExpectedDescriptiveString [
-	self assert: (Spot with: SpeedUpEffect new) asString equals: 'a SpeedUpSpot'
+SpotTest >> testSpotTurnsIntoExpectedDescriptiveString [
+	self assert: (RegularSpot with: SpeedUpEffect new) asString equals: 'a SpeedUpSpot'
 ]
 
 { #category : #'tests - regular' }
-SpotEffectTest >> testSpotWithRegularEffectDoesNothing [
+SpotTest >> testSpotWithRegularEffectDoesNothing [
 	| game board |
 	board := testResource effectlessBoardWithSpots: 5
 		throwing: {(SequentialDice withSequence: {4})}.
@@ -205,7 +213,7 @@ SpotEffectTest >> testSpotWithRegularEffectDoesNothing [
 ]
 
 { #category : #'tests - timemachine' }
-SpotEffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
+SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 6
@@ -222,7 +230,7 @@ SpotEffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositio
 ]
 
 { #category : #'tests - timemachine' }
-SpotEffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
+SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
 	board := testResource
 		effectTestingBoardWithSpots: 6
