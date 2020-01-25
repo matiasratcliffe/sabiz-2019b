@@ -14,6 +14,9 @@ JailSpot >> effect [
 
 { #category : #movement }
 JailSpot >> getRollMultiplierRolling: rollSum with: dices [
-	rollSum = dices maximumValue ifTrue: [ ^ 1 ].
-	^ 0.
+	| maximumValue |
+	maximumValue := (dices collect: [ :each | each maximumValue ]) sum.
+	rollSum = maximumValue
+		ifTrue: [ ^ 1 ].
+	^ 0
 ]

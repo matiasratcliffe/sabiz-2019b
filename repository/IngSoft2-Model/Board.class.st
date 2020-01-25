@@ -86,9 +86,10 @@ Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 
 { #category : #'private - moving' }
 Board >> nextStateFor: state under: effectsDisplacementSumForPlayer onRoundNumber: roundNumber [
-	| totalDisplacement |
-	"aca checkear lo de jail"
-	totalDisplacement := effectsDisplacementSumForPlayer + self rollSum.
+	| totalDisplacement multiplier rollSum |
+	rollSum := self rollSum.
+	multiplier := (spots at: (state spotNumber)) getRollMultiplierRolling: rollSum with: dices.
+	totalDisplacement := (effectsDisplacementSumForPlayer + rollSum) * multiplier.
 	^ self nextStateFor: state afterMoving: totalDisplacement onRoundNumber: roundNumber
 ]
 

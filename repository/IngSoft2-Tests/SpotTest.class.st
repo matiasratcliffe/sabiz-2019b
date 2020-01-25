@@ -46,10 +46,45 @@ SpotTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 
 { #category : #'tests - jailspot' }
 SpotTest >> testJailSpotPreventsFromEscapingUntilPlayerGetsMaximumRollResult [
+	| game board |
+	board := testResource
+		spotTestingBoardWithSpots: 5
+		and: JailSpot new
+		at: 3
+		throwing: {(SequentialDice withSequence: {2. 3. 4})}.
+	game := Game
+		playedBy: {player1}
+		on: board
+		using: testResource standardDeckOfCards.
+	self assert: (game positionOf: player1) equals: 1.
+	self assert: (game lapOf: player1) equals: 0.
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game lapOf: player1) equals: 0.
+	"This does not count as it is not the maximum value of the dice"
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game lapOf: player1) equals: 0.
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 2.
+	self assert: (game lapOf: player1) equals: 1.
 ]
 
 { #category : #'tests - jailspot' }
 SpotTest >> testJailSpotProducesNoEffectAfterLandingOnIt [
+	| game board |
+	board := testResource
+		spotTestingBoardWithSpots: 5
+		and: JailSpot new
+		at: 3
+		throwing: {(SequentialDice withSequence: {2})}.
+	game := Game
+		playedBy: {player1}
+		on: board
+		using: testResource standardDeckOfCards.
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game lapOf: player1) equals: 0
 ]
 
 { #category : #'tests - moonwalk' }

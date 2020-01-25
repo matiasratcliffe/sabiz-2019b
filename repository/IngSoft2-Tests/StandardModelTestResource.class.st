@@ -104,7 +104,7 @@ StandardModelTestResource >> standardSetOfDices [
 StandardModelTestResource >> standardSetOfPlayers [
 	^ {(Player named: #Player1).
 	(Player named: #Player2).
-	(Player named: #Player3)}
+	(Player named: #Player3)} asOrderedCollection
 ]
 
 { #category : #standardValues }
