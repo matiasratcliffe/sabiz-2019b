@@ -103,6 +103,11 @@ CardTest >> testAnOverloadCardCantBePlayedOnAPlayerThatFinished [
 ]
 
 { #category : #'tests - instant' }
+CardTest >> testCanOnlyPlayFreedomCardIfPlayerIsInJail [
+	self shouldBeImplemented
+]
+
+{ #category : #'tests - instant' }
 CardTest >> testCancellationCardAffectingAllPlayersRemovesOnlyOneGlobalEffect [
 	| game deck |
 	deck := GimmickDeck withSequence:
@@ -151,6 +156,12 @@ CardTest >> testCantPlayAPermanentCardIfItsNotTheTurnOfThePlayer [
 { #category : #tests }
 CardTest >> testCardTurnsIntoExpectedDescriptiveString [
 	self assert: (Card with: AccelerationEffect new) asString equals: 'an AccelerationCard'
+]
+
+{ #category : #'tests - instant' }
+CardTest >> testFreedomCardGetsPlayerOutOfJailByPuttingHimIntoTheNextSpotWithoutTriggeringAnyEffects [
+	"empty board ith jail and speedup right after"
+	self shouldBeImplemented
 ]
 
 { #category : #'tests - instant' }
