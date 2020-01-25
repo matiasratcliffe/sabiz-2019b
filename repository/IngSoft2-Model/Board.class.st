@@ -1,15 +1,23 @@
 "
-Class that represents a game board with spots
+Class that represents a game board with spots and a set of dices
 "
 Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
 		'spots',
-		'laps'
+		'laps',
+		'dices'
 	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #validation }
+Board class >> checkDices: dices [
+	self
+		assert: dices isNotEmpty
+		description: 'Tried to create a board with an invalid set of Dices'
+]
 
 { #category : #validation }
 Board class >> checkNumberOfLaps: laps [
@@ -22,19 +30,28 @@ Board class >> checkNumberOfSpots: spotsAmmount [
 ]
 
 { #category : #'instance creation' }
-Board class >> with: spotCollection andLaps: laps [
+Board class >> with: spotCollection andLaps: laps throwing: dices [
 	self checkNumberOfSpots: spotCollection size.
 	self checkNumberOfLaps: laps.
-	^ self new initializeWith: spotCollection andLaps: laps
+	self checkDices: dices.
+	^ self new
+		initializeWith: spotCollection
+		andLaps: laps
+		throwing: dices
 ]
 
 { #category : #'instance creation' }
-Board class >> with: effectDistribution andSpots: spotsAmount andLaps: laps [
+Board class >> with: spotDistribution andSpots: spotsAmount andLaps: laps throwing: dices [
 	| spots |
 	spots := OrderedCollection new.
 	spotsAmount
-		timesRepeat: [ spots add: (Spot with: effectDistribution random) ].
-	^ Board with: spots andLaps: laps
+		timesRepeat: [ spots add: spotDistribution random ].
+	^ Board with: spots andLaps: laps throwing: dices
+]
+
+{ #category : #accessing }
+Board >> dices [
+	^ dices copy
 ]
 
 { #category : #accessing }
@@ -44,9 +61,15 @@ Board >> effectAt: position [
 ]
 
 { #category : #initialization }
-Board >> initializeWith: spotsCollection andLaps: numberOfLaps [
+Board >> initializeWith: spotsCollection andLaps: numberOfLaps throwing: setOfDices [
 	spots := spotsCollection.
+	dices := setOfDices.
 	laps := numberOfLaps
+]
+
+{ #category : #accessing }
+Board >> isThereAJailAt: position [
+	^ (spots at: position) class = JailSpot
 ]
 
 { #category : #'private - moving' }
@@ -66,7 +89,16 @@ Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 		holding: state cardsInHand
 ]
 
-{ #category : #accessingGame }
+{ #category : #'private - moving' }
+Board >> nextStateFor: state under: effectsDisplacementSumForPlayer onRoundNumber: roundNumber [
+	| totalDisplacement multiplier rollSum |
+	rollSum := self rollSum.
+	multiplier := (spots at: (state spotNumber)) getRollMultiplierRolling: rollSum with: dices.
+	totalDisplacement := (effectsDisplacementSumForPlayer + rollSum) * multiplier.
+	^ self nextStateFor: state afterMoving: totalDisplacement onRoundNumber: roundNumber
+]
+
+{ #category : #accessing }
 Board >> numberOfLaps [
 	^ laps
 ]
@@ -74,4 +106,9 @@ Board >> numberOfLaps [
 { #category : #accessing }
 Board >> numberOfSpots [
 	^ spots size
+]
+
+{ #category : #'private - moving' }
+Board >> rollSum [
+	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
 ]

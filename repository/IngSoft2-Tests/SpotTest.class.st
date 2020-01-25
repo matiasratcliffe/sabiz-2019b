@@ -2,22 +2,22 @@
 This class contains tests about spots.
 "
 Class {
-	#name : #SpotEffectTest,
+	#name : #SpotTest,
 	#superclass : #StandardModelTest,
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
-SpotEffectTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
-	| game |
+{ #category : #'tests - atomicbomb' }
+SpotTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
+	| game board |
+	board := testResource
+		spotTestingBoardWithSpots: 10
+		and: (RegularSpot with: AtomicBombEffect new)
+		at: 3
+		throwing: {(SequentialDice withSequence: {13 . 1})}.
 	game := Game
 		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {13 . 1})}
-		on:
-			(testResource
-				effectTestingBoardWithSpots: 10
-				and: AtomicBombEffect new
-				at: 3)
+		on: board
 		using: testResource standardDeckOfCards.
 	game throwDicesFor: player1.
 	game throwDicesFor: player2.
@@ -29,32 +29,75 @@ SpotEffectTest >> testAtomicBombDoesNotAffectPlayersThatHaveAlreadyFinished [
 ]
 
 { #category : #'tests - cardgiving' }
-SpotEffectTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
+SpotTest >> testCardGivingSpotGivesOneCardToPlayerWhoTriggersIt [
 	| game board |
 	board := testResource
-		effectTestingBoardWithSpots: 5
-		and: CardGivingEffect new
-		at: 5.
+		spotTestingBoardWithSpots: 5
+		and: (RegularSpot with: CardGivingEffect new)
+		at: 5
+		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
 	self assert: (game cardsInHandOf: player1) size equals: 3
 ]
 
-{ #category : #tests }
-SpotEffectTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
-	| game |
+{ #category : #'tests - jailspot' }
+SpotTest >> testJailSpotPreventsFromEscapingUntilPlayerGetsMaximumRollResult [
+	| game board |
+	board := testResource
+		spotTestingBoardWithSpots: 5
+		and: JailSpot new
+		at: 3
+		throwing: {(SequentialDice withSequence: {2. 3. 4})}.
+	game := Game
+		playedBy: {player1}
+		on: board
+		using: testResource standardDeckOfCards.
+	self assert: (game positionOf: player1) equals: 1.
+	self assert: (game lapOf: player1) equals: 0.
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game lapOf: player1) equals: 0.
+	"This does not count as it is not the maximum value of the dice"
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game lapOf: player1) equals: 0.
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 2.
+	self assert: (game lapOf: player1) equals: 1.
+]
+
+{ #category : #'tests - jailspot' }
+SpotTest >> testJailSpotProducesNoEffectAfterLandingOnIt [
+	| game board |
+	board := testResource
+		spotTestingBoardWithSpots: 5
+		and: JailSpot new
+		at: 3
+		throwing: {(SequentialDice withSequence: {2})}.
+	game := Game
+		playedBy: {player1}
+		on: board
+		using: testResource standardDeckOfCards.
+	game throwDicesFor: player1.
+	self assert: (game positionOf: player1) equals: 3.
+	self assert: (game lapOf: player1) equals: 0
+]
+
+{ #category : #'tests - moonwalk' }
+SpotTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
+	| game board |
+	board := testResource
+		spotTestingBoardWithSpots: 10
+		and: (RegularSpot with: MoonWalkEffect new)
+		at: 5
+		throwing: {(SequentialDice withSequence: {10 . 2})}.
 	game := Game
 		playedBy: {player1. player2}
-		throwing: {(SequentialDice withSequence: {10 . 2})}
-		on:
-			(testResource
-				effectTestingBoardWithSpots: 10
-				and: MoonWalkEffect new
-				at: 5)
+		on: board
 		using: testResource standardDeckOfCards.
 	game throwDicesFor: player1.
 	game throwDicesFor: player2.
@@ -66,12 +109,15 @@ SpotEffectTest >> testMoonWalkDoesNotAffectPlayersThatHaveAlreadyFinished [
 ]
 
 { #category : #'tests - moonwalk' }
-SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
+SpotTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 	| board game |
-	board := testResource effectTestingBoardWithSpots: 8 and: (MoonWalkEffect goingBack: 3) at: 7.
+	board := testResource
+		spotTestingBoardWithSpots: 8
+		and: (RegularSpot with: (MoonWalkEffect goingBack: 3))
+		at: 7
+		throwing: {(SequentialDice withSequence: {1. 2. 3})}.
 	game := Game
 		playedBy: {player1. player2. player3}
-		throwing: {(SequentialDice withSequence: {1. 2. 3})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
@@ -86,12 +132,15 @@ SpotEffectTest >> testMoonWalkReducesThePositionOfAllPlayerWhoDidNotTriggerIt [
 ]
 
 { #category : #'tests - atomicbomb' }
-SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesBackToFirstSpotMaintainingLaps [
+SpotTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesBackToFirstSpotMaintainingLaps [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 5 and: AtomicBombEffect new at: 3.
+	board := testResource
+		spotTestingBoardWithSpots: 5
+		and: (RegularSpot with: AtomicBombEffect new)
+		at: 3
+		throwing: {(SequentialDice withSequence: {8. 3. 1})}.
 	game := Game
 		playedBy: {player1. player2. player3}
-		throwing: {(SequentialDice withSequence: {8. 3. 1})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
@@ -111,12 +160,15 @@ SpotEffectTest >> testPlayerTriggersAtomicBombAndEveryoneThatHasNotFinishedGoesB
 ]
 
 { #category : #'tests - speedup' }
-SpotEffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
+SpotTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 9 and: SpeedUpEffect new at: 5.
+	board := testResource
+		spotTestingBoardWithSpots: 9
+		and: (RegularSpot with: SpeedUpEffect new)
+		at: 5
+		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
@@ -124,12 +176,15 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAndGoesForwardsFourSpots [
 ]
 
 { #category : #'tests - speedup' }
-SpotEffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
+SpotTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingForwardFourPositions [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 6 and: SpeedUpEffect new at: 5.
+	board := testResource
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: SpeedUpEffect new)
+		at: 5
+		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
 	self assert: (game lapOf: player1) equals: 0.
@@ -139,12 +194,15 @@ SpotEffectTest >> testPlayerTriggersSpeedUpAtPositionFiveAndGainsALapAfterGoingF
 ]
 
 { #category : #'tests - wormhole' }
-SpotEffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
+SpotTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 6 and: WormHoleEffect new at: 6.
+	board := testResource
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: WormHoleEffect new)
+		at: 6
+		throwing: {(SequentialDice withSequence: {5})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {5})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
@@ -152,12 +210,15 @@ SpotEffectTest >> testPlayerTriggersWormHoleAndGoesBackFourSpots [
 ]
 
 { #category : #'tests - wormhole' }
-SpotEffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackFourPositions [
+SpotTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingBackFourPositions [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 6 and: WormHoleEffect new at: 2.
+	board := testResource
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: WormHoleEffect new)
+		at: 2
+		throwing: {(SequentialDice withSequence: {6. 1})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {6. 1})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
@@ -169,17 +230,17 @@ SpotEffectTest >> testPlayerTriggersWormHoleAtPositionTwoAndLosesALapAfterGoingB
 ]
 
 { #category : #tests }
-SpotEffectTest >> testSpotTurnsIntoExpectedDescriptiveString [
-	self assert: (Spot with: SpeedUpEffect new) asString equals: 'a SpeedUpSpot'
+SpotTest >> testRegularSpotTurnsIntoExpectedDescriptiveString [
+	self assert: (RegularSpot with: SpeedUpEffect new) asString equals: 'a SpeedUpSpot'
 ]
 
 { #category : #'tests - regular' }
-SpotEffectTest >> testSpotWithRegularEffectDoesNothing [
+SpotTest >> testSpotWithRegularEffectDoesNothing [
 	| game board |
-	board := testResource effectlessBoardWithSpots: 5.
+	board := testResource effectlessRegularBoardWithSpots: 5
+		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
@@ -187,12 +248,15 @@ SpotEffectTest >> testSpotWithRegularEffectDoesNothing [
 ]
 
 { #category : #'tests - timemachine' }
-SpotEffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
+SpotTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositionAndZeroNumberOfLaps [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 6 and: TimeMachineEffect new at: 5.
+	board := testResource
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: TimeMachineEffect new)
+		at: 5
+		throwing: {(SequentialDice withSequence: {4})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {4})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.
@@ -201,12 +265,15 @@ SpotEffectTest >> testTimeMachineAtFirstMovementOfPlayerReturnsHimToFirstPositio
 ]
 
 { #category : #'tests - timemachine' }
-SpotEffectTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
+SpotTest >> testTimeMachineReturnsPlayerToPositionAtPreviousRound [
 	| game board |
-	board := testResource effectTestingBoardWithSpots: 6 and: TimeMachineEffect new at: 5.
+	board := testResource
+		spotTestingBoardWithSpots: 6
+		and: (RegularSpot with: TimeMachineEffect new)
+		at: 5
+		throwing: {(SequentialDice withSequence: {2 . 8})}.
 	game := Game
 		playedBy: {player1}
-		throwing: {(SequentialDice withSequence: {2. 8})}
 		on: board
 		using: testResource standardDeckOfCards.
 	game playOneRoundWithoutPlayingCards.

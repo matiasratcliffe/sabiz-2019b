@@ -8,32 +8,48 @@ Class {
 }
 
 { #category : #boardCreation }
-StandardModelTestResource >> effectTestingBoardWithSpots: spotsNumber and: effect at: spotNumber [
-	| spots |
-	spots := OrderedCollection
-		new: spotsNumber
-		withAll: (Spot with: NullEffect new).
-	spots at: spotNumber put: (Spot with: effect).
-	^ Board with: spots andLaps: self standardNumberOfLaps
-]
-
-{ #category : #boardCreation }
-StandardModelTestResource >> effectlessBoardWithSpots: spotsNumber [
+StandardModelTestResource >> effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: spotsNumber [
 	^ Board
 		with:
 			(OrderedCollection
 				new: spotsNumber
-				withAll: (Spot with: NullEffect new))
+				withAll: (RegularSpot with: NullEffect new))
 		andLaps: 1
+		throwing: {SequentialDice withSequence: {spotsNumber}}
+]
+
+{ #category : #boardCreation }
+StandardModelTestResource >> effectlessRegularBoardWithSpots: spotsNumber throwing: dices [
+	^ Board
+		with:
+			(OrderedCollection
+				new: spotsNumber
+				withAll: (RegularSpot with: NullEffect new))
+		andLaps: 1
+		throwing: dices
 ]
 
 { #category : #gameCreation }
 StandardModelTestResource >> simplisticTestingGame [
+	| board |
+	board := self effectlessRegularBoardWithSpots: 10 throwing: { SequentialDice withSequence: { 4 } }.
 	^ Game
 		playedBy: {Player named: #Player1 . Player named: #Player2}
-		throwing: { SequentialDice withSequence: { 4 } }
-		on: (self effectlessBoardWithSpots: 10)
-		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new})
+		on: board
+		using: (Deck with: {AccelerationEffect new})
+]
+
+{ #category : #boardCreation }
+StandardModelTestResource >> spotTestingBoardWithSpots: spotsNumber and: spotToTest at: spotNumber throwing: dices [
+	| spots |
+	spots := OrderedCollection
+		new: spotsNumber
+		withAll: (RegularSpot with: NullEffect new).
+	spots at: spotNumber put: spotToTest.
+	^ Board
+		with: spots
+		andLaps: self standardNumberOfLaps
+		throwing: dices
 ]
 
 { #category : #boardCreation }
@@ -43,7 +59,11 @@ StandardModelTestResource >> standardBoard [
 
 { #category : #boardCreation }
 StandardModelTestResource >> standardBoardWithSpots: spots [
-	^ Board with: self standardEffectDistribution andSpots: spots andLaps: self standardNumberOfLaps
+	^ Board
+		with: self standardSpotDistribution
+		andSpots: spots
+		andLaps: self standardNumberOfLaps
+		throwing: self standardSetOfDices
 ]
 
 { #category : #standardValues }
@@ -57,38 +77,10 @@ StandardModelTestResource >> standardDeckOfCards [
 	^ Deck with: cardTypes asArray
 ]
 
-{ #category : #standardValues }
-StandardModelTestResource >> standardEffectDistribution [
-	^ OverallOccurrenceDistribution
-		with:
-			{(IndividualOccurrenceProbability
-				of: AtomicBombEffect new
-				withProbability: 2).
-			(IndividualOccurrenceProbability
-				of: NullEffect new
-				withProbability: 45).
-			(IndividualOccurrenceProbability
-				of: MoonWalkEffect new
-				withProbability: 5).
-			(IndividualOccurrenceProbability
-				of: SpeedUpEffect new
-				withProbability: 15).
-			(IndividualOccurrenceProbability
-				of: TimeMachineEffect new
-				withProbability: 8).
-			(IndividualOccurrenceProbability
-				of: WormHoleEffect new
-				withProbability: 15).
-			(IndividualOccurrenceProbability
-				of: CardGivingEffect new
-				withProbability: 10)}
-]
-
 { #category : #gameCreation }
 StandardModelTestResource >> standardGame [
 	^ Game
 		playedBy: self standardSetOfPlayers
-		throwing: self standardSetOfDices
 		on: self standardBoard
 		using: self standardDeckOfCards
 ]
@@ -112,5 +104,32 @@ StandardModelTestResource >> standardSetOfDices [
 StandardModelTestResource >> standardSetOfPlayers [
 	^ {(Player named: #Player1).
 	(Player named: #Player2).
-	(Player named: #Player3)}
+	(Player named: #Player3)} asOrderedCollection
+]
+
+{ #category : #standardValues }
+StandardModelTestResource >> standardSpotDistribution [
+	^ OverallOccurrenceDistribution
+		with:
+			{(IndividualOccurrenceProbability
+				of: (RegularSpot with: AtomicBombEffect new)
+				withProbability: 2).
+			(IndividualOccurrenceProbability
+				of: (RegularSpot with: NullEffect new)
+				withProbability: 45).
+			(IndividualOccurrenceProbability
+				of: (RegularSpot with: MoonWalkEffect new)
+				withProbability: 5).
+			(IndividualOccurrenceProbability
+				of: (RegularSpot with: SpeedUpEffect new)
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: (RegularSpot with: TimeMachineEffect new)
+				withProbability: 8).
+			(IndividualOccurrenceProbability
+				of: (RegularSpot with: WormHoleEffect new)
+				withProbability: 15).
+			(IndividualOccurrenceProbability
+				of: (RegularSpot with: CardGivingEffect new)
+				withProbability: 10)}
 ]

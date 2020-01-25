@@ -12,8 +12,7 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 	| game cardToPlay |
 	game := Game
 		playedBy: {player1. player2}
-		throwing: {(RandomDice withFaces: 6)}
-		on: (testResource effectlessBoardWithSpots: 10)
+		on: testResource standardBoard
 		using: (Deck with: {RepeatEffect new}).
 	cardToPlay := Card with: OverloadEffect new.
 	self
@@ -27,9 +26,8 @@ PlayerTest >> testCardsInHandOfReturnsEmptyColectionIfThePlayerHasNoCards [
 	| game |
 	game := Game
 		playedBy: {player1. player2}
-		throwing: {SequentialDice withSequence: {10. 1}}
-		on: (testResource effectlessBoardWithSpots: 10)
-		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new}).
+		on: testResource standardBoard
+		using: (Deck with: {AccelerationEffect new}).
 	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
 	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
 	self assert: (game cardsInHandOf: player1) asArray equals: {  }
@@ -45,14 +43,12 @@ PlayerTest >> testPlayerThatFinishedCantPlayACard [
 	| game card |
 	game := Game
 		playedBy: {player1. player2}
-		throwing: {SequentialDice withSequence: {10. 1}}
-		on: (testResource effectlessBoardWithSpots: 10)
-		using: (GimmickDeck withSequence: {Card with: RepeatEffect new}).
+		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
+		using: (Deck with: {(Card with: RepeatEffect new)}).
 	game throwDicesFor: player1.
 	game throwDicesFor: player2.
 	card := (game cardsInHandOf: player1) first.
-	self
-		should: [ game play: card for: player1 on: {player2} ]
+	self should: [ game play: card for: player1 on: {player2} ]
 		raise: AssertionFailure
 		whoseDescriptionIncludes: 'Trying to play a card for a player that has already finished'
 ]
@@ -67,8 +63,7 @@ PlayerTest >> testPlayingACardRemovesItFromHand [
 	| game cardToPlay |
 	game := Game
 		playedBy: {player1. player2}
-		throwing: {(RandomDice withFaces: 6)}
-		on: (testResource effectlessBoardWithSpots: 10)
+		on: testResource standardBoard
 		using: (Deck with: {AccelerationEffect new}).
 	cardToPlay := (game cardsInHandOf: player1) first.
 	game play: cardToPlay for: player1 on: game players. 

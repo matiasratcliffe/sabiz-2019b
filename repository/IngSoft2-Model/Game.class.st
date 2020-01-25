@@ -6,7 +6,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'leaderBoard',
-		'dices',
 		'board',
 		'playersStates',
 		'playedCards',
@@ -18,15 +17,10 @@ Class {
 }
 
 { #category : #validation }
-Game class >> checkDices: dices [
-	self
-		assert: dices isNotEmpty
-		description: 'Tried to create a game with an invalid set of Dices'
-]
-
-{ #category : #validation }
 Game class >> checkDuplicatePlayers: players [
-	self assert: players asSet size = players size description: 'The player set contains a duplicate'
+	self
+		assert: players asSet size = players size
+		description: 'The player set contains a duplicate'
 ]
 
 { #category : #validation }
@@ -37,13 +31,11 @@ Game class >> checkPlayerQuantity: players [
 ]
 
 { #category : #'instance creation' }
-Game class >> playedBy: players throwing: dices on: aBoard using: aDeck [
+Game class >> playedBy: players on: aBoard using: aDeck [
 	self checkDuplicatePlayers: players.
 	self checkPlayerQuantity: players.
-	self checkDices: dices.
 	^ self new
 		initializeWith: players
-		throwing: dices
 		on: aBoard
 		using: aDeck
 ]
@@ -100,11 +92,6 @@ Game >> deck [
 	^ deck
 ]
 
-{ #category : #accessingGame }
-Game >> dices [
-	^ dices copy
-]
-
 { #category : #'private - spotEffects' }
 Game >> displace: player by: anAmount [
 	| newState |
@@ -137,12 +124,11 @@ Game >> historyOf: player [
 ]
 
 { #category : #initialization }
-Game >> initializeWith: gamePlayers throwing: gameDices on: aBoard using: aDeck [
+Game >> initializeWith: gamePlayers on: aBoard using: aDeck [
 	leaderBoard := LeaderBoard new.
 	board := aBoard copy.
 	deck := aDeck.
 	turnAllocator := TurnAllocator for: gamePlayers.
-	dices := gameDices copy.
 	playedCards := OrderedCollection new.
 	playersStates := (gamePlayers
 		collect: [ :each | 
@@ -160,6 +146,11 @@ Game >> initializeWith: gamePlayers throwing: gameDices on: aBoard using: aDeck 
 				key: each
 				value: OrderedCollection new
 			]) asOrderedDictionary
+]
+
+{ #category : #accessingPlayer }
+Game >> isInJail: player [
+	^ board isThereAJailAt: (self positionOf: player)
 ]
 
 { #category : #accessingGameState }
@@ -183,11 +174,11 @@ Game >> lapOf: player [
 ]
 
 { #category : #'private - moving' }
-Game >> move: player [
+Game >> makeMoveFor: player [
 	| newState |
 	newState := board
 		nextStateFor: (self stateOf: player)
-		afterMoving: (self totalDisplacementFor: player)
+		under: (self effectsOn: player)
 		onRoundNumber: turnAllocator currentRoundNumber.
 	self updateStateFor: player with: newState.
 	self player: player triggersEffectAt: newState spotNumber. 
@@ -338,11 +329,6 @@ Game >> rewindPositionFor: player [
 				holding: targetState cardsInHand)
 ]
 
-{ #category : #'private - moving' }
-Game >> rollSum [
-	^ dices inject: 0 into: [ :sum :dice | sum + dice roll ]
-]
-
 { #category : #accessingGameState }
 Game >> roundNumber [
 	^ turnAllocator currentRoundNumber
@@ -372,20 +358,16 @@ Game >> throwDicesFor: player [
 				and: (self lapOf: player)
 				and: turnAllocator currentRoundNumber
 				holding: (self cardsInHandOf: player)).
-	self move: player.
+	self makeMoveFor: player.
 	(self playerHasFinished: player)
 		ifTrue: [ turnAllocator playerHasFinished: player ]
 		ifFalse: [ turnAllocator advanceTurnWheel ]
 ]
 
-{ #category : #'private - moving' }
-Game >> totalDisplacementFor: player [
-	^ self rollSum + (self effectsOn: player)
-]
-
 { #category : #'private - updating' }
 Game >> updateStateFor: player with: aState [
 	| playerStates |
+	aState = (self stateOf: player) ifTrue: [ ^ self ].
 	playerStates := playersStates at: player.
 	playerStates add: aState
 ]

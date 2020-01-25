@@ -23,6 +23,11 @@ RandomDice >> initializeWith: numberOfFaces [
 	faces := 1 to: numberOfFaces
 ]
 
+{ #category : #accessing }
+RandomDice >> maximumValue [
+	^ faces max
+]
+
 { #category : #rolling }
 RandomDice >> roll [
 	^ faces atRandom
