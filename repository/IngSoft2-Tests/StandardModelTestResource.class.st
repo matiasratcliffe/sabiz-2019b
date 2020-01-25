@@ -36,7 +36,7 @@ StandardModelTestResource >> simplisticTestingGame [
 	^ Game
 		playedBy: {Player named: #Player1 . Player named: #Player2}
 		on: board
-		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new})
+		using: (Deck with: {AccelerationEffect new})
 ]
 
 { #category : #boardCreation }

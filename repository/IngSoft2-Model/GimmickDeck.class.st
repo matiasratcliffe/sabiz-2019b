@@ -23,5 +23,5 @@ GimmickDeck >> initializeWithSequence: sequence [
 
 { #category : #accessing }
 GimmickDeck >> nextCard [
-	^ dealingSequence roll
+	^ Card with: dealingSequence roll
 ]

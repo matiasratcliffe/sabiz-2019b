@@ -67,6 +67,11 @@ Board >> initializeWith: spotsCollection andLaps: numberOfLaps throwing: setOfDi
 	laps := numberOfLaps
 ]
 
+{ #category : #accessing }
+Board >> isThereAJailAt: position [
+	^ (spots at: position) class = JailSpot
+]
+
 { #category : #'private - moving' }
 Board >> nextStateFor: state afterMoving: rollSum onRoundNumber: roundNumber [
 	| newLapNumber netNewPosition grossNewPosition |

@@ -148,6 +148,11 @@ Game >> initializeWith: gamePlayers on: aBoard using: aDeck [
 			]) asOrderedDictionary
 ]
 
+{ #category : #accessingPlayer }
+Game >> isInJail: player [
+	^ board isThereAJailAt: (self positionOf: player)
+]
+
 { #category : #accessingGameState }
 Game >> isNotOver [
 	^ (leaderBoard includesAll: self players) not

@@ -27,7 +27,7 @@ PlayerTest >> testCardsInHandOfReturnsEmptyColectionIfThePlayerHasNoCards [
 	game := Game
 		playedBy: {player1. player2}
 		on: testResource standardBoard
-		using: (GimmickDeck withSequence: {Card with: AccelerationEffect new}).
+		using: (Deck with: {AccelerationEffect new}).
 	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
 	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
 	self assert: (game cardsInHandOf: player1) asArray equals: {  }
@@ -44,7 +44,7 @@ PlayerTest >> testPlayerThatFinishedCantPlayACard [
 	game := Game
 		playedBy: {player1. player2}
 		on: (testResource effectlessRegularBoardWithDiceLoadedWithSpotsNumberAndSpots: 10)
-		using: (GimmickDeck withSequence: {(Card with: RepeatEffect new)}).
+		using: (Deck with: {(Card with: RepeatEffect new)}).
 	game throwDicesFor: player1.
 	game throwDicesFor: player2.
 	card := (game cardsInHandOf: player1) first.
