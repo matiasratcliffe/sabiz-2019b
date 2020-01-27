@@ -62,6 +62,17 @@ Game >> apply: effect for: player [
 	effect applyOn: self triggeredBy: player
 ]
 
+{ #category : #'private - cardEffects' }
+Game >> bailOut: player [
+	| newState |
+	self assert: (self isInJail: player) description: 'You can only bail out a jailed player'.
+	newState := board
+		nextStateFor: (self stateOf: player)
+		afterMoving: 1
+		onRoundNumber: turnAllocator currentRoundNumber.
+	self updateStateFor: player with: newState
+]
+
 { #category : #accessingPlayer }
 Game >> cardsInHandOf: player [
 	^ (self stateOf: player) cardsInHand
@@ -95,6 +106,7 @@ Game >> deck [
 { #category : #'private - spotEffects' }
 Game >> displace: player by: anAmount [
 	| newState |
+	self assert: (self isFree: player) description: 'Cannot change the position of an imprisoned player'.
 	newState := board
 		nextStateFor: (self stateOf: player)
 		afterMoving: anAmount
@@ -149,6 +161,11 @@ Game >> initializeWith: gamePlayers on: aBoard using: aDeck [
 ]
 
 { #category : #accessingPlayer }
+Game >> isFree: player [
+	^ (self isInJail: player) not
+]
+
+{ #category : #accessingPlayer }
 Game >> isInJail: player [
 	^ board isThereAJailAt: (self positionOf: player)
 ]
@@ -191,14 +208,15 @@ Game >> makeMoveFor: player [
 Game >> moveEveryoneToTheFirstSpot [
 	self playersStillPlaying
 		do: [ :each | 
-			self
-				updateStateFor: each
-				with:
-					(PlayerState
-						on: 1
-						and: (self lapOf: each)
-						and: turnAllocator currentRoundNumber
-						holding: (self cardsInHandOf: each)) ]
+			(self isInJail: each)
+				ifFalse: [ self
+						updateStateFor: each
+						with:
+							(PlayerState
+								on: 1
+								and: (self lapOf: each)
+								and: turnAllocator currentRoundNumber
+								holding: (self cardsInHandOf: each)) ] ]
 ]
 
 { #category : #accessingGame }
@@ -227,7 +245,7 @@ Game >> player: player triggersMoonWalkEffectMoving: anAmount [
 	self playersStillPlaying
 		do: [ :each | 
 			| newState |
-			(each = player)
+			(each = player or: (self isInJail: each))
 				ifFalse: [ newState := board
 						nextStateFor: (self stateOf: each)
 						afterMoving: anAmount
@@ -313,6 +331,7 @@ Game >> replayLastCardOn: target for: player [
 { #category : #'private - spotEffects' }
 Game >> rewindPositionFor: player [
 	| targetState round |
+	self assert: (self isFree: player) description: 'Cannot rewind the position of an imprisoned player'.
 	round := (self stateOf: player) roundNumber.
 	targetState := (self historyOf: player)
 		select: [ :each | each roundNumber = (round - 1) ].

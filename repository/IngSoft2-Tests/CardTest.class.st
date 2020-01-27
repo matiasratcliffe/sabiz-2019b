@@ -119,7 +119,7 @@ CardTest >> testCanOnlyPlayFreedomCardIfTargetPlayerIsInJail [
 	self
 		should: [ game play: cardToPlay for: player1 on: {player1}]
 		raise: AssertionFailure
-		whoseDescriptionIncludes: 'The freedom card can only be played on a jailed player'.
+		whoseDescriptionIncludes: 'You can only bail out a jailed player'.
 	game throwDicesFor: player1.
 	self assert: (game positionOf: player1) equals: 3.
 	self assert: (game lapOf: player1) equals: 0.
