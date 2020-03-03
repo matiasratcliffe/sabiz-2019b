@@ -233,6 +233,86 @@ CardTest >> testOverloadEffectDecreasesByTwoTheRollResultOfOnlyOnePlayerAndIsAcu
 	self assert: (game positionOf: player2) equals: 2
 ]
 
+{ #category : #'tests - cardcount' }
+CardTest >> testPlayingACancelationCardRemovesItFromTheHand [
+	| game deck |
+	deck := GimmickDeck withSequence: {AccelerationEffect new. CancelationEffect new}.
+	game := self newCardTestingGameWith: deck.
+	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
+	game play: (Card with: CancelationEffect new) for: player1
+		  on: (PlayedCard of: AccelerationEffect new to: game players).
+	self assert: (game cardsInHandOf: player1) size equals: 0
+]
+
+{ #category : #'tests - cardcount' }
+CardTest >> testPlayingAFreedomCardRemovesItFromTheHand [
+	| board game |
+	board := testResource
+		spotTestingBoardWithSpots: 2
+		and: JailSpot new
+		at: 1
+		throwing: testResource standardSetOfDices.
+	game := Game
+		playedBy: {player1}
+		on: board
+		using: (Deck with: {FreedomEffect new}).
+	game play: (Card with: FreedomEffect new) for: player1 on: {player1}.
+	self assert: (game cardsInHandOf: player1) size equals: 1
+]
+
+{ #category : #'tests - cardcount' }
+CardTest >> testPlayingARedoCardRemovesItFromTheHand [
+	| game deck |
+	deck := GimmickDeck withSequence: {AccelerationEffect new. RedoEffect new}.
+	game := self newCardTestingGameWith: deck.
+	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
+	game play: (Card with: RedoEffect new) for: player1 on: game players.
+	self assert: (game cardsInHandOf: player1) size equals: 0
+]
+
+{ #category : #'tests - cardcount' }
+CardTest >> testPlayingARepeatCardRemovesItFromTheHand [
+	| game cardToPlay board deck |
+	deck := Deck with: {RepeatEffect new}.
+	board := testResource
+		spotTestingBoardWithSpots: 5
+		and: (RegularSpot with: SpeedUpEffect new)
+		at: 2
+		throwing: {(SequentialDice withSequence: {1})}.
+	game := self newCardTestingGameWith: deck on: board.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	game throwDicesFor: player1.
+	game play: cardToPlay for: player1 on: {player1}.
+	self assert: (game cardsInHandOf: player1) size equals: 1
+]
+
+{ #category : #'tests - cardcount' }
+CardTest >> testPlayingASpeedCardRemovesItFromTheHand [
+	| game cardToPlay |
+	game := self newCardTestingGameFor: SpeedEffect new.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	game play: cardToPlay for: player1 on: {player2}.
+	self assert: (game cardsInHandOf: player1) size equals: 1
+]
+
+{ #category : #'tests - cardcount' }
+CardTest >> testPlayingAnAccelerationCardRemovesItFromTheHand [
+	| game cardToPlay |
+	game := self newCardTestingGameFor: AccelerationEffect new.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	game play: cardToPlay for: player1 on: game players.
+	self assert: (game cardsInHandOf: player1) size equals: 1
+]
+
+{ #category : #'tests - cardcount' }
+CardTest >> testPlayingAnOverloadCardRemovesItFromTheHand [
+	| game cardToPlay |
+	game := self newCardTestingGameFor: OverloadEffect new.
+	cardToPlay := (game cardsInHandOf: player1) first.
+	game play: cardToPlay for: player1 on: {player2}.
+	self assert: (game cardsInHandOf: player1) size equals: 1
+]
+
 { #category : #'tests - instant' }
 CardTest >> testRedoCardActsAsAPermanentIfLastPlayedCardIsPermanent [
 	| game deck |
@@ -274,7 +354,7 @@ CardTest >> testRedoCardActsAsThePreviousOneOfThePreviousOneCardIsThePreviousOne
 ]
 
 { #category : #'tests - instant' }
-CardTest >> testRedoCardCannotBePlayedIfAnotherCardsWereNeverPlayed [
+CardTest >> testRedoCardCannotBePlayedIfAnotherCardWasNeverPlayed [
 	| game deck |
 	deck := GimmickDeck withSequence: {Card with: AccelerationEffect new. RedoEffect new}.
 	game := self newCardTestingGameWith: deck.

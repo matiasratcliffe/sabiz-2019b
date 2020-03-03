@@ -22,7 +22,7 @@ PlayerTest >> testCantPlayACardThatIsNotInTheHand [
 ]
 
 { #category : #tests }
-PlayerTest >> testCardsInHandOfReturnsEmptyColectionIfThePlayerHasNoCards [
+PlayerTest >> testCardsInHandOfReturnsEmptyColectionIfThePlayerHasNoCards [ 
 	| game |
 	game := Game
 		playedBy: {player1. player2}
@@ -31,6 +31,7 @@ PlayerTest >> testCardsInHandOfReturnsEmptyColectionIfThePlayerHasNoCards [
 	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
 	game play: (Card with: AccelerationEffect new) for: player1 on: game players.
 	self assert: (game cardsInHandOf: player1) asArray equals: {  }
+
 ]
 
 { #category : #tests }
@@ -56,18 +57,6 @@ PlayerTest >> testPlayerThatFinishedCantPlayACard [
 { #category : #tests }
 PlayerTest >> testPlayerTurnsIntoExpectedDescriptiveString [
 	self assert: (Player named: 'player') asString equals: 'player'
-]
-
-{ #category : #tests }
-PlayerTest >> testPlayingACardRemovesItFromHand [
-	| game cardToPlay |
-	game := Game
-		playedBy: {player1. player2}
-		on: testResource standardBoard
-		using: (Deck with: {AccelerationEffect new}).
-	cardToPlay := (game cardsInHandOf: player1) first.
-	game play: cardToPlay for: player1 on: game players. 
-	self assert: (game cardsInHandOf: player1) size equals: 1
 ]
 
 { #category : #tests }
