@@ -42,16 +42,7 @@ Game class >> playedBy: players on: aBoard using: aDeck [
 
 { #category : #'private - cardEffects' }
 Game >> addPlayedCard: card to: target by: player [
-	| newState newHand |
-	playedCards add: (PlayedCard of: card effect to: target).
-	newHand := self cardsInHandOf: player.
-	newHand remove: card.
-	newState := PlayerState
-		on: (self positionOf: player)
-		and: (self lapOf: player)
-		and: turnAllocator currentRoundNumber
-		holding: newHand.
-	self updateStateFor: player with: newState
+	playedCards add: (PlayedCard of: card effect to: target)
 ]
 
 { #category : #'private - spotEffects' }
@@ -229,7 +220,7 @@ Game >> play: card for: player on: target [
 	self
 		assert: (self playerHasNotFinished: player)
 		description: 'Trying to play a card for a player that has already finished'.
-	(self stateOf: player) checkAvailabilityOf: card.
+	self remove: card fromHandOf: player.
 	card applyEffectOn: target on: self triggeredBy: player
 ]
 
@@ -288,6 +279,20 @@ Game >> playersStillPlaying [
 { #category : #accessingPlayer }
 Game >> positionOf: player [
 	^ (self stateOf: player) spotNumber
+]
+
+{ #category : #'private - updating' }
+Game >> remove: card fromHandOf: player [
+	| newState newHand |
+	(self stateOf: player) checkAvailabilityOf: card.
+	newHand := self cardsInHandOf: player.
+	newHand remove: card.
+	newState := PlayerState
+		on: (self positionOf: player)
+		and: (self lapOf: player)
+		and: turnAllocator currentRoundNumber
+		holding: newHand.
+	self updateStateFor: player with: newState
 ]
 
 { #category : #'private - cardEffects' }
